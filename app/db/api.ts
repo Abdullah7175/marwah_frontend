@@ -37,17 +37,21 @@ export async function makePostCall({ postUrl, data, onStart, onProgressEnd, onSu
 }
 export async function makeGetCall({ postUrl, data, onStart, onProgressEnd, onSuccess, onUnexpected }: ApiCallProps): Promise<any> {
     onStart();
+    console.log("Making GET request to:", postUrl);
     await fetch(postUrl, {
         method: "GET",
         body: data
     }).then((response) => {
+        console.log("Response status:", response.status);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         return response.json();
     }).then((responseData) => {
+        console.log("API Success - Data received:", responseData);
         onSuccess(responseData);
     }).catch((error) => {
+        console.error("API Error:", error);
         onUnexpected(error);
     }).finally(() => {
         onProgressEnd();
