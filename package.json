@@ -29,7 +29,8 @@
     "react-player": "^2.16.0",
     "react-signature-canvas": "^1.0.6",
     "react-signature-pad-wrapper": "^3.4.0",
-    "serverless-mysql": "^1.5.5"
+    "serverless-mysql": "^1.5.5",
+    "sharp": "^0.34.4"
   },
   "overrides": {
     "next": "13.5.6"
