@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="http://localhost:8000" />
+        <link rel="preconnect" href="http://98.82.201.1:8000" />
         
         {/* Google Analytics */}
         <script

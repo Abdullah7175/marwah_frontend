@@ -2,7 +2,7 @@ var debug = true;
 export var APP_URL = "https://mtumrah.com"; 
 
 
-export var BACKEND_BASE_URL = "http://localhost:8000";
+export var BACKEND_BASE_URL = "http://98.82.201.1:8000";
 export var API_BASE_URL = BACKEND_BASE_URL + "/api";
 if (debug) {
 }
