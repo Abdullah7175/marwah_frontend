@@ -26,6 +26,7 @@ import Image from "next/image";
 import { Fade, Slide } from "react-awesome-reveal";
 import { store } from "../../state/store";
 import { getUserFrame } from "@/app/layout";
+import Head from "next/head";
 
 export default function PackageDetail() {
     function buildComponents(p: UmrahPackage) {
@@ -121,8 +122,27 @@ export default function PackageDetail() {
 
 
 
-    return getUserFrame(
-        <div className="w-full flex text-white">
+    return (
+        <>
+            <Head>
+                <title>{packageToView?.name || 'Umrah Package Details'} | Marwah Travels Umrah</title>
+                <meta name="description" content={`${packageToView?.name || 'Umrah Package'} - ${packageToView?.what_to_expect || 'Experience luxury Umrah with premium accommodations and VIP services'}. Book now with Marwah Travels Umrah.`} />
+                <meta name="keywords" content={`${packageToView?.name || 'umrah package'}, umrah details, luxury umrah, premium umrah, makkah madina package, umrah booking`} />
+                <link rel="canonical" href={`https://www.mtumrah.com/pages/package_detail`} />
+                
+                {/* Open Graph */}
+                <meta property="og:title" content={`${packageToView?.name || 'Umrah Package Details'} | Marwah Travels Umrah`} />
+                <meta property="og:description" content={`${packageToView?.name || 'Umrah Package'} - ${packageToView?.what_to_expect || 'Experience luxury Umrah with premium accommodations and VIP services'}. Book now with Marwah Travels Umrah.`} />
+                <meta property="og:url" content={`https://www.mtumrah.com/pages/package_detail`} />
+                <meta property="og:type" content="product" />
+                
+                {/* Twitter */}
+                <meta name="twitter:title" content={`${packageToView?.name || 'Umrah Package Details'} | Marwah Travels Umrah`} />
+                <meta name="twitter:description" content={`${packageToView?.name || 'Umrah Package'} - ${packageToView?.what_to_expect || 'Experience luxury Umrah with premium accommodations and VIP services'}. Book now with Marwah Travels Umrah.`} />
+                <meta name="twitter:card" content="summary_large_image" />
+            </Head>
+            {getUserFrame(
+                <div className="w-full flex text-white">
              <div className="w-full">
                     <Card
                         className="w-full  "
@@ -374,5 +394,7 @@ export default function PackageDetail() {
                     </Card>
                 </div>
         </div>
+            )}
+        </>
     );
 }

@@ -10,44 +10,10 @@ import Breadcrumb from '@/components/Breadcrumb';
 
 
 export function getUserFrame(child: any) {
-  return (<body style={{ }} className="bg-center">
-    <div
-    style={{ zIndex: -1,
-    backgroundImage: "url('/images/kaba2.jpg')",
-    height: '100vh',
-    width: '100vw',
-    position: 'fixed',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'}}
-    ></div>
-    <Navbar />
-    <Breadcrumb />
-
-    <main className="relative overflow-hidden">
-
-      {child}
-
-
-    </main>
-    <Space h={50} />
-    <Footer />
-
-
-    <FloatingComponents />
-  </body>);
+  return child;
 }
 export function getAdminFrame(child: any) {
-  return (<body style={{ backgroundSize: 'cover', backgroundAttachment: 'fixed' }} className="bg-center">
-    
-
-    <main >
-
-      {child}
-
-
-    </main>
-
-  </body>);
+  return child;
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -87,7 +53,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://database.mtumrah.com" />
+        <link rel="preconnect" href="http://localhost:8000" />
         
         {/* Google Analytics */}
         <script

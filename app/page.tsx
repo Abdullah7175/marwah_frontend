@@ -14,21 +14,21 @@ import { getUserFrame } from "./layout";
 import Head from "next/head";
 
 export default function Home() {
-
-
-
   const [inquiryVisible, setInquiryVisibility] = useState(false);
+
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+  
   async function startTimer() {
     setInquiryVisibility(false);
     await delay(200 * 1000);
-    
     setInquiryVisibility(true);
   }
 
-  useEffect(()=>{startTimer()},[]);
+  useEffect(() => {
+    startTimer();
+  }, []);
   return (
     <>
       <Head>
@@ -43,8 +43,6 @@ export default function Home() {
 
           <Dialog PaperProps={{ sx: { background: 'rgba(0,0,0,0)' } }} open={inquiryVisible}>
             <IquerySection isDialog={true} onDismiss={startTimer} />
-
-
           </Dialog>
           
           <IquerySection isDialog={false} onDismiss={startTimer} />

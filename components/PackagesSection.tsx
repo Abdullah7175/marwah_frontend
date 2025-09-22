@@ -103,6 +103,40 @@ function buildComponents(p: UmrahPackage) {
 
 }
 
+function getPackageFeatures(p: UmrahPackage): string[] {
+    const features: string[] = [];
+    
+    if (p.hotel_madina_enabled) {
+        features.push(p.hotel_madina_name);
+    }
+    if (p.hotel_makkah_enabled) {
+        features.push(p.hotel_makkah_name);
+    }
+    if (p.ziyarat) {
+        features.push("Ziyarat Included");
+    }
+    if (p.visa_enabled) {
+        features.push("Visa Included");
+    }
+    if (p.breakfast_enabled) {
+        features.push("Breakfast Included");
+    }
+    if (p.dinner_enabled) {
+        features.push("Dinner Included");
+    }
+    if (p.ticket_enabled) {
+        features.push("Ticket Included");
+    }
+    if (p.is_roundtrip && p.ticket_enabled) {
+        features.push("Roundtrip Ticket");
+    }
+    if (p.guide) {
+        features.push("Free Umrah Guide");
+    }
+    
+    return features;
+}
+
 const a = [1, 2, 3]
 export default function PackagesSection() {
 
@@ -155,77 +189,108 @@ export default function PackagesSection() {
 
     // Debug logging
     console.log("Rendering packs:", packs);
+    console.log("Packs length:", packs?.length);
+    console.log("Loading state:", loading);
 
 
     return (
-        <div id='packages' style={{ backgroundColor: 'rgba(0,0,0,0.2)' }} className={`w-full  flex flex-col items-center  ${loading ? "h-[800px]" : ""}`}>
+        <div id='packages' className={`w-full flex flex-col items-center py-16 ${loading ? "h-[800px]" : ""}`}>
             {loading ? <div>
 
                 <CircularProgress size={90} sx={{ color: "white", borderRadius: 20, borderWidth: 3, padding: 1 }} className="mt-48" />
 
             </div> : <div className="w-full  flex flex-col items-center">
-                {packs && packs.length > 0 ? packs.map((cat, id) => <div
-
-                    onClick={() => { }}
-                    className="w-full  flex flex-col items-center" key={id}>
-                    <h2 className='bold-54 text-white pt-10 text-center font-bold text-3xl '>
+                {packs && packs.length > 0 ? packs.map((cat, id) => (
+                    <div
+                        onClick={() => { }}
+                        className="w-full  flex flex-col items-center" key={id}>
+                    <h2 className='text-white pt-10 text-center font-bold text-4xl mb-8'>
                         {cat.name}
                     </h2>
 
-                    <Grid className="my-10" justifyContent={'center'} container gap={4}>
-                        {cat?.list?.map((pack: UmrahPackage, i: any) =>
-                            <Grid key={i} item sm={2.2}>
-                                
+                        <Grid className="my-10" justifyContent={'center'} container gap={4}>
+                            {cat?.list?.map((pack: UmrahPackage, i: any) =>
+                                <Grid key={i} item sm={2.2}>
+                                    
                                 <Link href="/pages/package_detail">
                                     <Card
                                      onClick={() => {
                                         store.dispatch(selectUmrahPackage(pack));
                                       }}
+                                    className="hover:border-white hover:border-2 hover:shadow-white hover:shadow-xl overflow-hidden" 
+                                    sx={{ 
+                                        backgroundColor: 'transparent', 
+                                        borderRadius: 3,
+                                        background: 'linear-gradient(135deg, #2d5016 0%, #3a5f1a 50%, #2d5016 100%)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        backdropFilter: 'blur(10px)'
+                                    }} 
+                                    elevation={8}>
+                                        
+                                        {/* Background Image Section */}
+                                        <div className="relative w-full h-48 overflow-hidden">
+                                            <img 
+                                                src={FILE_BASE_URL + (pack.package_image ?? "/images/kaba1.jpg")} 
+                                                alt={`${pack.name} Umrah package image`} 
+                                                className="w-full h-full object-cover filter blur-sm scale-110" 
+                                                onError={(e) => {
+                                                    e.currentTarget.src = '/images/kaba1.jpg';
+                                                }}
+                                            />
+                                            <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+                                        </div>
 
-                                    className="hover:border-white hover:border-2 hover:shadow-white hover:shadow-xl" sx={{ backgroundColor: 'white', borderRadius: 2 }} elevation={4}>
-                                        <img src={FILE_BASE_URL +( pack.package_image ?? "/kaba_image.jpg")} width={720} height={300} alt={`${pack.name} Umrah package image`} className="w-full h-36" />
-
-                                        <div className="p-4 hover:cursor-pointer ">
-                                            <div className="flex flex-col">
-                                                <h3 className='text-bold text-[16px] text-black pt-2 font-bold'>
+                                        {/* Content Section */}
+                                        <div className="p-6 text-white">
+                                            <div className="flex flex-col space-y-4">
+                                                {/* Package Title */}
+                                                <h3 className='text-xl font-bold text-white leading-tight'>
                                                     {pack.name}
                                                 </h3>
-                                                <span className="mt-1">
-                                                    <strong className="text-green-600 text-xl">${pack.price_quad}/-</strong> Per Person
-                                                </span>
-
-                                                <Divider />
-                                                <Space h={10} />
-
-                                                {...buildComponents(pack)}
-                                                <Space h={20} />
-
-                                                <div className="flexBetween mx-2">
-                                                    <div onClick={() => window.open("tel:+" + pack.phone, "_blank")} className="hover:bg-green-700 bg-green-600 cursor-pointer  hover:shadow-3xl p-3 rounded-full shadow-sm">
-                                                        <Call style={{ color: 'white' }} />
-                                                    </div>
-                                                    <div onClick={() => window.open("mailto:" + pack.email, "_blank")} className=" bg-orange-500  hover:bg-orange-600 p-3 cursor-pointer rounded-full shadow-sm">
-                                                        <Email style={{ color: 'white' }} />
-                                                    </div>
-                                                    <div onClick={() => window.open("https://api.whatsapp.com/send?phone=" + pack.whatsapp, "_blank")} className="bg-gray-700 cursor-pointer hover:bg-black  p-3 rounded-full shadow-sm">
-                                                        <WhatsApp style={{ color: 'white' }} />
-                                                    </div>
+                                                
+                                                {/* Price */}
+                                                <div className="text-center">
+                                                    <span className="text-2xl font-bold text-white">
+                                                        ${pack.price_quad}/- Per Person
+                                                    </span>
                                                 </div>
 
-                                                <Space h={10} />
+                                                {/* Features List */}
+                                                <div className="space-y-2">
+                                                    {getPackageFeatures(pack).map((feature, index) => (
+                                                        <div key={index} className="flex items-center space-x-3">
+                                                            <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                                                <span className="text-white text-xs font-bold">✓</span>
+                                                            </div>
+                                                            <span className="text-white text-sm">{feature || 'Feature'}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
 
-
+                                                {/* Contact Us Button */}
+                                                <div className="pt-4">
+                                                    <button 
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            window.open("tel:+" + pack.phone, "_blank");
+                                                        }}
+                                                        className="w-full bg-amber-600 hover:bg-amber-700 text-black font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-lg"
+                                                    >
+                                                        Contact Us
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
 
                                     </Card>
                                 </Link>
-                            </Grid>
-                        )}
+                                </Grid>
+                            )}
 
 
-                    </Grid>
-                </div>) : <div className="text-white text-center mt-20">
+                        </Grid>
+                    </div>
+                )) : <div className="text-white text-center mt-20">
                     <h2 className="text-2xl font-bold mb-4">No Packages Available</h2>
                     <p>We're currently updating our packages. Please check back soon!</p>
                 </div>}
