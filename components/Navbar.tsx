@@ -31,7 +31,7 @@ const Navbar = () => {
       </ul>
       
       <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot">
-      <Image
+      {/* <Image
                     src={'/images/truspilot.png'}
                     alt="Trustpilot logo"
                     width={100}
@@ -41,7 +41,7 @@ const Navbar = () => {
                     loading="lazy"
                     // className={"transition-opacity opacity-0 duration-[2s]"}
                     // onLoadingComplete={(image)=>image.classList.remove("opacity-0")}
-                />
+                /> */}
       </a>
 </div>
       <div className="hidden lg:flex items-center gap-3 ms-auto">
@@ -120,7 +120,7 @@ const Navbar = () => {
         ))}
       </ul>
       <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot">
-      <Image
+      {/* <Image
                     src={'/images/truspilot.png'}
                     alt="Trustpilot logo"
                     width={100}
@@ -130,7 +130,7 @@ const Navbar = () => {
                     loading="lazy"
                     // className={"transition-opacity opacity-0 duration-[2s]"}
                     // onLoadingComplete={(image)=>image.classList.remove("opacity-0")}
-                />
+                /> */}
       </a>
         </div>
       )}
