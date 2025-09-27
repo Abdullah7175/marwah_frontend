@@ -15,6 +15,43 @@ body {
   font-family: Inter;
 }
 
+/* Admin-specific styles */
+.admin-html,
+.admin-body {
+  margin: 0;
+  padding: 0;
+  background-color: #f8fafc;
+  font-family: Inter, sans-serif;
+}
+
+.admin-layout {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  position: relative;
+}
+
+/* Ensure admin pages don't inherit main site styles */
+.admin-layout * {
+  box-sizing: border-box;
+}
+
+/* Hide admin from main website navigation */
+.admin-only {
+  display: none !important;
+}
+
+/* Override any main site styles for admin */
+.admin-layout .admin-layout {
+  background-color: #f8fafc !important;
+}
+
+/* Ensure admin pages are completely isolated */
+.admin-layout .navbar,
+.admin-layout .footer,
+.admin-layout .breadcrumb {
+  display: none !important;
+}
+
 @layer utilities {
   .btn_white { 
     @apply  border-white bg-white px-10 py-2 text-black

@@ -1,11 +1,9 @@
-var debug = true;
+var debug = false;
 export var APP_URL = "https://mtumrah.com"; 
 
 
 export var BACKEND_BASE_URL = "http://98.82.201.1:8000";
 export var API_BASE_URL = BACKEND_BASE_URL + "/api";
-if (debug) {
-}
 
 export const  FILE_BASE_URL  = API_BASE_URL+"/files?path="; 
 

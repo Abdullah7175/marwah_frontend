@@ -16,14 +16,34 @@ export type ApiCallProps = {
 
 export async function makePostCall({ postUrl, data, onStart, onProgressEnd, onSuccess, onUnexpected }: ApiCallProps): Promise<any> {
     onStart();
-    console.log(data);
+    
+    // Check if this is an admin API call that needs authentication
+    const isAdminApi = postUrl.includes('/api/panel/') || postUrl.includes('/api/packages/') || postUrl.includes('/api/categories/') || postUrl.includes('/api/hotels/') || postUrl.includes('/api/blogs/') || postUrl.includes('/api/reviews/') || postUrl.includes('/api/inquiries/');
+    
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    
+    // Add authentication header for admin APIs
+    if (isAdminApi) {
+        const token = localStorage.getItem('admin_token');
+        if (token) {
+            myHeaders.append("Authorization", `Bearer ${token}`);
+        }
+    }
+    
     await fetch(postUrl, {
         method: "POST",
-        body: data, headers: myHeaders
+        body: data, 
+        headers: myHeaders
     }).then((response) => {
         if (!response.ok) {
+            if (response.status === 401 && isAdminApi) {
+                // Authentication expired, redirect to login
+                localStorage.removeItem('admin_token');
+                localStorage.removeItem('admin_user');
+                window.location.href = '/admin/login';
+                return;
+            }
             throw new Error(response.status + "");
         }
         return response.json();
@@ -37,29 +57,46 @@ export async function makePostCall({ postUrl, data, onStart, onProgressEnd, onSu
 }
 export async function makeGetCall({ postUrl, data, onStart, onProgressEnd, onSuccess, onUnexpected }: ApiCallProps): Promise<any> {
     onStart();
-    console.log("Making GET request to:", postUrl);
     
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
         
+        // Check if this is an admin API call that needs authentication
+        const isAdminApi = postUrl.includes('/api/panel/') || postUrl.includes('/api/packages/') || postUrl.includes('/api/categories/') || postUrl.includes('/api/hotels/') || postUrl.includes('/api/blogs/') || postUrl.includes('/api/reviews/') || postUrl.includes('/api/inquiries/');
+        
+        const headers: HeadersInit = {
+            'Content-Type': 'application/json',
+        };
+        
+        // Add authentication header for admin APIs
+        if (isAdminApi) {
+            const token = localStorage.getItem('admin_token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
+        
         const response = await fetch(postUrl, {
             method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers,
             signal: controller.signal
         });
         
         clearTimeout(timeoutId);
-        console.log("Response status:", response.status);
         
         if (!response.ok) {
+            if (response.status === 401 && isAdminApi) {
+                // Authentication expired, redirect to login
+                localStorage.removeItem('admin_token');
+                localStorage.removeItem('admin_user');
+                window.location.href = '/admin/login';
+                return;
+            }
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
         const responseData = await response.json();
-        console.log("API Success - Data received:", responseData);
         onSuccess(responseData);
         
     } catch (error) {
