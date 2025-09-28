@@ -1,7 +1,6 @@
 
 import { AirplaneTicket, Call, Camera, Category, DinnerDining, DinnerDiningRounded, Email, FreeBreakfast, Hotel, HotelOutlined, PermIdentityTwoTone, RoundaboutRightTwoTone, SupportAgent, WhatsApp } from "@mui/icons-material";
 import { Card, CircularProgress, Divider, Grid } from "@mui/material";
-import Image from "next/image";
 import Space from "./Space";
 import { transparentBlack } from "@/constants";
 import { useEffect, useState } from "react";
@@ -232,7 +231,7 @@ export default function PackagesSection() {
                                             <img 
                                                 src={FILE_BASE_URL + (pack.package_image ?? "/images/kaba1.jpg")} 
                                                 alt={`${pack.name} Umrah package image`} 
-                                                className="w-full h-full object-cover filter blur-sm scale-110" 
+                                                className="w-full h-full object-cover scale-110" 
                                                 onError={(e) => {
                                                     e.currentTarget.src = '/images/kaba1.jpg';
                                                 }}

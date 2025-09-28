@@ -265,7 +265,7 @@ export function ReviewsTab() {
       {!loading && (
         <Grid className="" container>
           {reviews?.map((inquiry: Review) => (
-            <Grid md={3} padding={1}>
+            <Grid key={inquiry.id} item md={3} padding={1}>
               <Card
 
                 className="center flex w-full gap-1 flex-col items-center hover:cursor-pointer hover:shadow-md hover:shadow-gray-300"

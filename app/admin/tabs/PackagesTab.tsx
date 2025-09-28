@@ -306,7 +306,10 @@ export function BasicTable() {
           //result
           console.log(res);
           setPackageToEdit(undefined);
-          loadPackages()
+          // Force reload packages after successful update
+          setTimeout(() => {
+            loadPackages();
+          }, 100);
         },
         function (e: any) {
           //error

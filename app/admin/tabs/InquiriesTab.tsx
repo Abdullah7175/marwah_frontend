@@ -1,7 +1,7 @@
-import { GET_DELETE_INQUIRY, GET_INQUIRIES } from "@/app/db/Routes";
-import { ApiCallProps, makeGetCall } from "@/app/db/api";
+import { GET_DELETE_INQUIRY, GET_INQUIRIES, UPDATE_INQUIRY } from "@/app/db/Routes";
+import { ApiCallProps, makeGetCall, makePostCall } from "@/app/db/api";
 import Inquiry from "@/app/type/Inquiry";
-import { Email, NoAdultContent, Phone, Smartphone } from "@mui/icons-material";
+import { Email, NoAdultContent, Phone, Smartphone, Edit } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  TextField,
 } from "@mui/material";
 import { IconUserCircle } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -41,10 +42,46 @@ export function InquiriesTab() {
   }
 
   const [inquiryToView, setInquiryToView] = useState<Inquiry>();
+  const [inquiryToEdit, setInquiryToEdit] = useState<Inquiry>();
+  const [editInquiryData, setEditInquiryData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
 
   useEffect(() => {
     loadInquiries();
   }, []);
+
+  function updateInquiry() {
+    const props: ApiCallProps = {
+      postUrl: UPDATE_INQUIRY,
+      data: JSON.stringify({
+        id: inquiryToEdit?.id,
+        name: editInquiryData.name,
+        email: editInquiryData.email,
+        phone: editInquiryData.phone,
+        message: editInquiryData.message
+      }),
+      onStart: function (): void {
+        setLoading(true);
+      },
+      onProgressEnd: function (): void {
+        setLoading(false);
+      },
+      onSuccess: function (res: any) {
+        loadInquiries();
+        setInquiryToEdit(undefined);
+        toast.success("Inquiry updated successfully!");
+      },
+      onUnexpected: function (res: any) {
+        console.log("Unexpected Result:", res);
+        toast.error("Failed to update inquiry");
+      },
+    };
+    makePostCall(props);
+  }
 
   function deleteInquiry(id: string) {
     const props: ApiCallProps = {
@@ -71,6 +108,64 @@ export function InquiriesTab() {
     });
   }
 
+  function getInquiryEditDialog() {
+    return (
+      <Dialog open={inquiryToEdit != undefined} maxWidth="md" fullWidth>
+        <DialogTitle className="bg-yellow-50 font-bold text-[25px]">
+          Edit Inquiry
+        </DialogTitle>
+        <DialogContent sx={{ padding: 3 }}>
+          <div className="flex flex-col gap-4">
+            <TextField
+              label="Name"
+              fullWidth
+              value={editInquiryData.name}
+              onChange={(e) => setEditInquiryData(prev => ({ ...prev, name: e.target.value }))}
+            />
+            <TextField
+              label="Email"
+              fullWidth
+              value={editInquiryData.email}
+              onChange={(e) => setEditInquiryData(prev => ({ ...prev, email: e.target.value }))}
+            />
+            <TextField
+              label="Phone"
+              fullWidth
+              value={editInquiryData.phone}
+              onChange={(e) => setEditInquiryData(prev => ({ ...prev, phone: e.target.value }))}
+            />
+            <TextField
+              label="Message"
+              fullWidth
+              multiline
+              rows={4}
+              value={editInquiryData.message}
+              onChange={(e) => setEditInquiryData(prev => ({ ...prev, message: e.target.value }))}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions sx={{ paddingBottom: 3 }}>
+          <Button
+            onClick={updateInquiry}
+            sx={{ borderRadius: 10, paddingX: 6 }}
+            variant="contained"
+            color="success"
+          >
+            Update
+          </Button>
+          <Button
+            onClick={() => setInquiryToEdit(undefined)}
+            sx={{ borderRadius: 10, paddingX: 6 }}
+            variant="contained"
+            color="error"
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
   function getInquiryViewDialog() {
     return (
       <Dialog open={inquiryToView != undefined} fullScreen>
@@ -82,7 +177,6 @@ export function InquiriesTab() {
             className="center flex w-full gap-1 flex-col items-center p-3"
             sx={{
               borderRadius: "2px",
-
               width: window.innerWidth,
               height: 300,
             }}
@@ -95,7 +189,6 @@ export function InquiriesTab() {
 
             <div className="flex  flex-row items-center">
               <Smartphone sx={{ width: 18, height: 18 }} />
-
               <h1 className=" text-center text-green-800  text-[20px]">
                 {inquiryToView?.phone}
               </h1>
@@ -117,6 +210,23 @@ export function InquiriesTab() {
           </Card>
         </DialogContent>
         <DialogActions sx={{ paddingBottom: 3 }}>
+          <Button
+            onClick={() => {
+              setInquiryToEdit(inquiryToView);
+              setEditInquiryData({
+                name: inquiryToView?.name || '',
+                email: inquiryToView?.email || '',
+                phone: inquiryToView?.phone || '',
+                message: inquiryToView?.message || ''
+              });
+              setInquiryToView(undefined);
+            }}
+            sx={{ borderRadius: 10, paddingX: 6 }}
+            variant="contained"
+            color="primary"
+          >
+            Edit
+          </Button>
           <Button
             onClick={() => deleteInquiry(inquiryToView?.id ?? "")}
             sx={{ borderRadius: 10, paddingX: 6 }}
@@ -145,6 +255,7 @@ export function InquiriesTab() {
       <Toaster position="bottom-center" />
 
       {inquiryToView && getInquiryViewDialog()}
+      {inquiryToEdit && getInquiryEditDialog()}
 
       <h1 className="font-bold text-black text-2xl px-5 bg-yellow-50 py-5 ">
         User Inquiries
@@ -175,7 +286,7 @@ export function InquiriesTab() {
       {!loading && (
         <Grid container>
           {inquires?.map((inquiry: Inquiry) => (
-            <Grid md={2.6} padding={3}>
+            <Grid key={inquiry.id} item md={2.6} padding={3}>
               <Card
                 onClick={() => setInquiryToView(inquiry)}
                 className="center flex w-full gap-1 flex-col items-center hover:cursor-pointer hover:shadow-xl hover:shadow-gray-300"

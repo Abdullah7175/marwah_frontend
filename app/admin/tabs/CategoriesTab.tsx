@@ -107,10 +107,33 @@ export function BasicTable() {
 
 
 
+  function editCategory(category: Category) {
+    const props: ApiCallProps = {
+      postUrl: UPDATE_CATEGORY,
+      data: JSON.stringify({ 'action': 'update', 'id': category.id, 'name': editCategoryName }),
+      onStart: function (): void {
+        setLoading(true);
+      },
+      onProgressEnd: function (): void {
+        setLoading(false);
+      },
+      onSuccess: function (res: any) {
+        loadCategories();
+      },
+      onUnexpected: function (res: any) {
+        console.log("Unexpected Result:", res);
+      }
+    }
+
+    setCategoryToEdit(undefined);
+    makePostCall(props)
+  }
+
+  // Add category function
   function addCategory(category: string) {
     const props: ApiCallProps = {
       postUrl: POST_CREATE_CATEGORY,
-      data: JSON.stringify({ 'name':category }),
+      data: JSON.stringify({ 'name': category }),
       onStart: function (): void {
         setLoading(true);
       },
@@ -125,22 +148,53 @@ export function BasicTable() {
       }
     }
     setCategoryToAdd(undefined);
-
     makePostCall(props)
   }
 
-
-
   const [categoryName, setCategoryName] = useState('');
-
   const [categoryToDelete, setCategoryToDelete] = useState<Category>();
   const [categoryToAdd, setCategoryToAdd] = useState<Category>();
+  const [categoryToEdit, setCategoryToEdit] = useState<Category>();
+  const [editCategoryName, setEditCategoryName] = useState('');
+
+  function getEditCategoryDialog() {
+    return (<Dialog sx={{
+      backdropFilter: "blur(1px) sepia(5%)"
+    }}
+      PaperProps={{ sx: { borderRadius: "30px", padding: 1, width: 500 } }} open={categoryToEdit != undefined}>
+      <DialogTitle>
+        <h1 className="font-bold text-[30px]">
+          Edit Category
+        </h1>
+      </DialogTitle>
+      <DialogContent>
+        <TextField
+          sx={{ marginY: 1 }}
+          multiline
+          minRows={3}
+          id="name"
+          label="Name"
+          fullWidth
+          variant="outlined"
+          value={editCategoryName}
+          onChange={(e: any) => {
+            setEditCategoryName(e.target.value);
+          }}
+        />
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={() => editCategory(categoryToEdit!)} sx={{ borderRadius: 10, paddingX: 6 }} variant="contained" color="success">Update</Button>
+        <Button onClick={() => { setCategoryToEdit(undefined) }} sx={{ borderRadius: 10, paddingX: 6 }} variant="contained" color='error'>Cancel</Button>
+      </DialogActions>
+    </Dialog>);
+  }
 
   function getAddNewCategoryDialog() {
     return (<Dialog sx={{
       backdropFilter: "blur(1px) sepia(5%)"
     }}
-      PaperProps={{ sx: { borderRadius: "30px", padding: 1 ,width:500} }} open={categoryToAdd != undefined}>
+      PaperProps={{ sx: { borderRadius: "30px", padding: 1, width: 500 } }} open={categoryToAdd != undefined}>
       <DialogTitle>
         <h1 className="font-bold text-[30px]">
           Add New Category
@@ -148,26 +202,23 @@ export function BasicTable() {
       </DialogTitle>
       <DialogContent>
         <TextField
-        sx={{marginY:1}}
-        multiline
-        minRows={3}
+          sx={{ marginY: 1 }}
+          multiline
+          minRows={3}
           id="name"
           label="Name"
           fullWidth
           variant="outlined"
           value={categoryName}
           onChange={(e: any) => {
-
             setCategoryName(e.target.value);
-
-
           }}
         />
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={() => addCategory(categoryName)} sx={{ borderRadius: 10,paddingX:6 }} variant="contained" color="success">Add</Button>
-        <Button onClick={() => { setCategoryToAdd(undefined) }} sx={{ borderRadius: 10,paddingX:6 }} variant="contained" color='error' >Cancel</Button>
+        <Button onClick={() => addCategory(categoryName)} sx={{ borderRadius: 10, paddingX: 6 }} variant="contained" color="success">Add</Button>
+        <Button onClick={() => { setCategoryToAdd(undefined) }} sx={{ borderRadius: 10, paddingX: 6 }} variant="contained" color='error'>Cancel</Button>
       </DialogActions>
     </Dialog>);
   }
@@ -176,7 +227,6 @@ export function BasicTable() {
     return (<Dialog sx={{
       backdropFilter: "blur(1px) sepia(5%)",
     }}
-      // 👇 Props passed to Paper (modal content)
       PaperProps={{ sx: { borderRadius: "30px", padding: 1 } }} open={categoryToDelete != undefined}>
       <DialogTitle>
         <h1 className="font-bold text-[30px]">
@@ -184,21 +234,17 @@ export function BasicTable() {
         </h1>
       </DialogTitle>
       <DialogContent>
-        <h1 className="font-sm text-[20px]" >
+        <h1 className="font-sm text-[20px]">
           This action is irreversible, when you delete on delete all Packages under that category would also be deleted
         </h1>
       </DialogContent>
 
-
-
-
       <DialogActions>
-        <Button onClick={() => deleteCategory(categoryToDelete)} sx={{ borderRadius: 10,paddingX:6  }} variant="contained" color="error">Delete</Button>
-        <Button onClick={() => { setCategoryToDelete(undefined) }} sx={{ borderRadius: 10,paddingX:6  }} variant="contained" color='success' >Cancel</Button>
+        <Button onClick={() => deleteCategory(categoryToDelete)} sx={{ borderRadius: 10, paddingX: 6 }} variant="contained" color="error">Delete</Button>
+        <Button onClick={() => { setCategoryToDelete(undefined) }} sx={{ borderRadius: 10, paddingX: 6 }} variant="contained" color='success'>Cancel</Button>
       </DialogActions>
     </Dialog>);
   }
-
 
   return (
     <div>
@@ -213,7 +259,7 @@ export function BasicTable() {
 
 
       {getAddNewCategoryDialog()}
-
+      {getEditCategoryDialog()}
       {getDeleteCategoryDialog()}
 
 
@@ -228,6 +274,7 @@ export function BasicTable() {
               <TableCell>Name</TableCell>
               <TableCell align="right">Packages</TableCell>
               <TableCell align="right">Status</TableCell>
+              <TableCell align="right">Edit</TableCell>
               <TableCell align="right">Delete</TableCell>
 
             </TableRow>
@@ -244,6 +291,12 @@ export function BasicTable() {
                 <TableCell align="right">{row.packages_count}</TableCell>
                 <TableCell align="right" onClick={() => updateStatus(row)}>
                   {row.status == "active" ? <ToggleOn className="hover:cursor-pointer" htmlColor="green" fontSize={"large"} /> : <ToggleOff className="hover:cursor-pointer" htmlColor="red" fontSize={"large"} />}
+                </TableCell>
+                <TableCell align="right">
+                  <Input onClick={() => { 
+                    setCategoryToEdit(row); 
+                    setEditCategoryName(row.name); 
+                  }} htmlColor="blue" className="hover:cursor-pointer hover:text-blue-600 hover:shadow-xl" />
                 </TableCell>
                 <TableCell align="right">
                   {<Delete onClick={() => { setCategoryToDelete(row) }} htmlColor="red" className="hover:cursor-pointer hover:text-red-600 hover:shadow-xl " />}

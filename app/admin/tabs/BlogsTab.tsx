@@ -154,7 +154,12 @@ export function BlogsTab() {
   }
 
   function updateBlog(p: Blog) {
-    if (!p.image) {
+    console.log('Updating blog with data:', p);
+    console.log('Image field:', p.image);
+    console.log('Title:', p.title);
+    console.log('Elements length:', p.elements.length);
+    
+    if (!p.image || p.image === '') {
       toast.error("Please Select Blog Main Photo", {
         style: {
           borderRadius: "20px",
@@ -322,7 +327,7 @@ export function BlogsTab() {
       {!loading && (
         <Grid className="" container>
           {inquires?.map((inquiry: Blog) => (
-            <Grid md={3} padding={1}>
+            <Grid key={inquiry.id} item md={3} padding={1}>
               <Card
                 onClick={() => setBlogToEdit(inquiry)}
                 className="center flex w-full gap-1 flex-col items-center hover:cursor-pointer hover:shadow-md hover:shadow-gray-300"

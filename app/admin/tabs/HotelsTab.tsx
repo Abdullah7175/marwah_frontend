@@ -440,7 +440,16 @@ export function BasicTable() {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    <img alt="" className="rounded-xl w-28 h-22" src={BACKEND_BASE_URL+ row.image}/>
+                    <img 
+                        alt="" 
+                        className="rounded-xl w-28 h-22" 
+                        src={BACKEND_BASE_URL+ row.image}
+                        onError={(e) => {
+                            console.log('Hotel image failed to load:', BACKEND_BASE_URL + row.image);
+                            const img = e.target as HTMLImageElement;
+                            img.src = '/images/kaba1.jpg'; // Use local fallback image
+                        }}
+                    />
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {row.name}

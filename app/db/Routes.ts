@@ -31,6 +31,7 @@ export const POST_UPDATE_HOTEL = API_BASE_URL +'/hotels/update';
 
 export const GET_INQUIRIES = API_BASE_URL + '/inquiries';
 export const GET_DELETE_INQUIRY = API_BASE_URL +'/inquiry/delete/';
+export const UPDATE_INQUIRY = API_BASE_URL + '/inquiries/update';
 
 
 export const GET_PACKAGES = API_BASE_URL + "/web/packs";

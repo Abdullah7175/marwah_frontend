@@ -151,8 +151,13 @@ function EditBlogDialog({
 
 
     function getImageUrl(url: any) {
+        if (!url) return '';
+        
         if (url.includes('blogs_images')) {
             return FILE_BASE_URL + url;
+        } else if (typeof url === 'string' && url.startsWith('data:')) {
+            // Handle base64 data URLs
+            return url;
         } else {
             return url;
         }
@@ -244,7 +249,7 @@ function EditBlogDialog({
         >
             {getDeleteBlogDialog()}
             <DialogTitle sx={{ padding: 0 }}>
-                <h1 className="flex flexBetween flex-row items-center font-bold text-[25px] bg-yellow-50 p-3 text-black">
+                <div className="flex flexBetween flex-row items-center font-bold text-[25px] bg-yellow-50 p-3 text-black">
                     <span>Edit Blog</span>
                     <Button
                         onClick={() => setBlogToDelete(blogToEdit)}
@@ -254,7 +259,7 @@ function EditBlogDialog({
                     >
                         Delete
                     </Button>
-                </h1>
+                </div>
             </DialogTitle>
             <DialogContent>
                 <input
@@ -284,6 +289,11 @@ function EditBlogDialog({
                                     height={"700px" }
                                     alt="main"
                                     src={getImageUrl(blogData.image)}
+                                    onError={(e) => {
+                                        console.log('Blog image failed to load:', getImageUrl(blogData.image));
+                                        const img = e.target as HTMLImageElement;
+                                        img.src = '/images/kaba1.jpg'; // Use local fallback image
+                                    }}
                                 />
                             ) : (
                                 <IconCameraPlus
@@ -433,6 +443,11 @@ function EditBlogDialog({
                                 width={1024}
                                 height={720}
                                 className="w-full h-auto"
+                                onError={(e) => {
+                                    console.log('Blog preview image failed to load:', getImageUrl(blogData.image));
+                                    const img = e.target as HTMLImageElement;
+                                    img.src = '/images/kaba1.jpg'; // Use local fallback image
+                                }}
                             />
                         )}
                         {blogData.title != '' && <span className="font-bold text-[37px]">{blogData.title}</span>}

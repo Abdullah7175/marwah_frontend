@@ -25,7 +25,7 @@ import AuthGuard from '../../../components/AuthGuard';
 import TabPanel from '@/app/type/TabPanel';
 
 const index: React.FC = () => {
-    const [value, setValue] = useState(6);
+    const [value, setValue] = useState(0);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -117,25 +117,25 @@ const index: React.FC = () => {
         />
     ]
     const panels = [
-        <TabPanel value={value} index={1}>
+        <TabPanel key={1} value={value} index={1}>
             <CategoriesTab />
         </TabPanel>,
-        <TabPanel value={value} index={2}>
+        <TabPanel key={2} value={value} index={2}>
             <PackagesTab />
         </TabPanel>,
-        <TabPanel value={value} index={3}>
+        <TabPanel key={3} value={value} index={3}>
             <InquiriesTab />
         </TabPanel>,
-        <TabPanel value={value} index={4}>
+        <TabPanel key={4} value={value} index={4}>
             <BlogsTab />
         </TabPanel>,
-        <TabPanel value={value} index={5}>
+        <TabPanel key={5} value={value} index={5}>
             <HotelsTab />
         </TabPanel>,
-        <TabPanel value={value} index={6}>
+        <TabPanel key={6} value={value} index={6}>
             <ReviewsTab />
         </TabPanel>,
-        <TabPanel value={value} index={7}>
+        <TabPanel key={7} value={value} index={7}>
             <CustomPackagesTab />
         </TabPanel>
     ]
@@ -157,13 +157,23 @@ const index: React.FC = () => {
             <AuthGuard>
                 <div style={{ display: 'flex' }} >
                     <Tabs
-
                         orientation="vertical"
                         value={value}
                         onChange={handleChange}
-                        className='flex-1/2 shadow-xl'
-
-                        style={{ borderRight: '1px solid #e0e0e0', backgroundColor: 'black', height: "800px" }}
+                        variant="standard"
+                        sx={{ 
+                            borderRight: '1px solid #e0e0e0', 
+                            backgroundColor: 'black', 
+                            height: "800px",
+                            width: '256px',
+                            boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+                            '& .MuiTabs-indicator': {
+                                display: 'none'
+                            },
+                            '& .MuiTabs-flexContainer': {
+                                flexDirection: 'column'
+                            }
+                        }}
                     >
 
                         <div className='w-64 h-72 flex items-center flex-center flex-col'>

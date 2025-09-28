@@ -29,6 +29,13 @@ function EditPackageDialog({
 }: EditPackageDialogProps) {
     const [packageData, setPackageData] = useState<UmrahPackage>(packageToUpdate ?? UmrahPackage.getInitialData());
 
+    // Update packageData when packageToUpdate changes
+    React.useEffect(() => {
+        if (packageToUpdate) {
+            setPackageData(packageToUpdate);
+        }
+    }, [packageToUpdate]);
+
     const handleChange = (
         e: any
     ) => {
@@ -57,17 +64,33 @@ function EditPackageDialog({
         }
     };
     function isValidImageUrl(url: string) {
-        return url.includes("package_images")
+        if (!url) return false;
+        // Check if it's a backend image path
+        return url.includes("package_images") || url.includes("hotel_images") || url.includes("blog_images");
     }
 
     function getImageUrl(url: any) {
+        if (!url) return '';
+        
         if (isValidImageUrl(url)) {
-            // console.log(BACKEND_BASE_URL + url);
-            return FILE_BASE_URL + url;
-        } else {
+            // Try multiple URL formats to find the working one
+            const urlFormats = [
+                BACKEND_BASE_URL + url, // Direct URL
+                FILE_BASE_URL + url, // API URL with path
+                FILE_BASE_URL + url.replace('/storage/', 'storage/'), // API URL without leading slash
+                BACKEND_BASE_URL + url.replace('/storage/', 'storage/'), // Direct URL without leading slash
+            ];
+            
+            // For now, return the first format and let error handling deal with fallbacks
+            const primaryUrl = urlFormats[0];
+            console.log('Attempting to load image:', primaryUrl);
+            return primaryUrl;
+        } else if (typeof url === 'string' && url.startsWith('data:')) {
+            // Handle base64 data URLs
             return url;
+        } else {
+            return url || '';
         }
-
     }
 
     function formatText(name: string, intitailValue: string) {
@@ -129,9 +152,9 @@ function EditPackageDialog({
             PaperProps={{ sx: { borderRadius: "0px", padding: 0 } }}
         >
             <DialogTitle sx={{ padding: 0 }}>
-                <h1 className="flex flex-row items-center font-bold text-[25px] bg-yellow-500 p-3 text-white">
+                <div className="flex flex-row items-center font-bold text-[25px] bg-yellow-500 p-3 text-white">
                     Edit Package
-                </h1>
+                </div>
             </DialogTitle>
             <DialogContent sx={{ padding: 5 }}>
                 <div
@@ -143,8 +166,31 @@ function EditPackageDialog({
                             className="flex-1 w-auto h-auto  "
                             width={window.innerWidth}
                             height={"700px"}
-                           
                             src={getImageUrl(packageData.package_image)}
+                            onError={(e) => {
+                                const currentUrl = getImageUrl(packageData.package_image);
+                                console.log('Main image failed to load:', currentUrl);
+                                
+                                // Try alternative URL formats
+                                const altUrls = [
+                                    FILE_BASE_URL + packageData.package_image,
+                                    BACKEND_BASE_URL + packageData.package_image.replace('/storage/', 'storage/'),
+                                    FILE_BASE_URL + packageData.package_image.replace('/storage/', 'storage/'),
+                                ];
+                                
+                                const img = e.target as HTMLImageElement;
+                                const currentSrc = img.src;
+                                
+                                // Find the next URL to try
+                                const nextUrl = altUrls.find(url => url !== currentSrc);
+                                if (nextUrl) {
+                                    console.log('Trying alternative URL:', nextUrl);
+                                    img.src = nextUrl;
+                                } else {
+                                    console.log('All image URLs failed, using fallback image');
+                                    img.src = '/images/kaba1.jpg'; // Use local fallback image
+                                }
+                            }}
                         />
                     ) : (
                         <IconCameraPlus
@@ -529,6 +575,11 @@ function EditPackageDialog({
                                                     height={"700px" }
                                                     alt="main"
                                                     src={getImageUrl(packageData.hotel_makkah_image)}
+                                                    onError={(e) => {
+                                                        console.log('Hotel Makkah image failed to load:', getImageUrl(packageData.hotel_makkah_image));
+                                                        const img = e.target as HTMLImageElement;
+                                                        img.src = '/images/kaba1.jpg'; // Use local fallback image
+                                                    }}
                                                 />
 
 
@@ -628,6 +679,11 @@ function EditPackageDialog({
                                                     height={"700px" }
                                                     alt="main"
                                                     src={getImageUrl(packageData.hotel_madina_image)}
+                                                    onError={(e) => {
+                                                        console.log('Hotel Madina image failed to load:', getImageUrl(packageData.hotel_madina_image));
+                                                        const img = e.target as HTMLImageElement;
+                                                        img.src = '/images/kaba1.jpg'; // Use local fallback image
+                                                    }}
                                                 />
 
 
@@ -726,6 +782,11 @@ function EditPackageDialog({
                                                     height={"700px" }
                                                     alt="main"
                                                     src={getImageUrl(packageData.visa_image)}
+                                                    onError={(e) => {
+                                                        console.log('Visa image failed to load:', getImageUrl(packageData.visa_image));
+                                                        const img = e.target as HTMLImageElement;
+                                                        img.src = '/images/kaba1.jpg'; // Use local fallback image
+                                                    }}
                                                 />
 
 
@@ -825,6 +886,11 @@ function EditPackageDialog({
                                                     height={"700px" }
                                                     alt="main"
                                                     src={getImageUrl(packageData.trans_image)}
+                                                    onError={(e) => {
+                                                        console.log('Transport image failed to load:', getImageUrl(packageData.trans_image));
+                                                        const img = e.target as HTMLImageElement;
+                                                        img.src = '/images/kaba1.jpg'; // Use local fallback image
+                                                    }}
                                                 />
 
 
