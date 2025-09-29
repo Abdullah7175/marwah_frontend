@@ -1,9 +1,33 @@
 var debug = false;
-export var APP_URL = "https://mtumrah.com"; 
 
+// Environment-based configuration
+const getBackendConfig = () => {
+  // Check if we're in production with HTTPS
+  if (typeof window !== 'undefined') {
+    const isHttps = window.location.protocol === 'https:';
+    const isDomain = window.location.hostname === 'mtumrah.com' || window.location.hostname === 'www.mtumrah.com';
+    
+    if (isHttps && isDomain) {
+      return {
+        APP_URL: "https://mtumrah.com",
+        BACKEND_BASE_URL: "https://mtumrah.com/api",
+        API_BASE_URL: "https://mtumrah.com/api"
+      };
+    }
+  }
+  
+  // Default to current IP configuration
+  return {
+    APP_URL: "http://mtumrah.com:3000",
+    BACKEND_BASE_URL: "http://98.82.201.1:8000",
+    API_BASE_URL: "http://98.82.201.1:8000/api"
+  };
+};
 
-export var BACKEND_BASE_URL = "http://98.82.201.1:8000";
-export var API_BASE_URL = BACKEND_BASE_URL + "/api";
+const config = getBackendConfig();
+export var APP_URL = config.APP_URL;
+export var BACKEND_BASE_URL = config.BACKEND_BASE_URL;
+export var API_BASE_URL = config.API_BASE_URL;
 
 export const  FILE_BASE_URL  = API_BASE_URL+"/files?path="; 
 

@@ -3,6 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 
+// Helper function to get base URL
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    const isHttps = window.location.protocol === 'https:';
+    const isDomain = window.location.hostname === 'mtumrah.com' || window.location.hostname === 'www.mtumrah.com';
+    
+    if (isHttps && isDomain) {
+      return 'https://mtumrah.com';
+    }
+  }
+  
+  // Default to current setup
+  return 'http://mtumrah.com:3000';
+};
+
 interface SeoSettings {
   meta_title: string;
   meta_description: string;
@@ -79,8 +94,8 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       "@type": "TravelAgency",
       "name": "Marwah Travels",
       "description": description,
-      "url": "https://www.mtumrah.com",
-      "logo": "https://www.mtumrah.com/logo2.png",
+      "url": getBaseUrl(),
+      "logo": `${getBaseUrl()}/logo2.png`,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "15636 71ST AVE 28B",
@@ -113,19 +128,19 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://www.mtumrah.com/" />
+      <meta property="og:url" content={`${getBaseUrl()}/${pageName === 'home' ? '' : pageName}`} />
       <meta property="og:title" content={ogTitle} />
       <meta property="og:description" content={ogDescription} />
-      <meta property="og:image" content={`https://www.mtumrah.com${ogImage}`} />
+      <meta property="og:image" content={`${getBaseUrl()}${ogImage}`} />
       <meta property="og:site_name" content="Marwah Travels" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content="https://www.mtumrah.com/" />
+      <meta name="twitter:url" content={`${getBaseUrl()}/${pageName === 'home' ? '' : pageName}`} />
       <meta name="twitter:title" content={twitterTitle} />
       <meta name="twitter:description" content={twitterDescription} />
-      <meta name="twitter:image" content={`https://www.mtumrah.com${twitterImage}`} />
+      <meta name="twitter:image" content={`${getBaseUrl()}${twitterImage}`} />
       <meta name="twitter:site" content="@marwahtravels" />
       
       {/* Additional Meta Tags */}
@@ -134,7 +149,7 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       <meta name="msapplication-TileColor" content="#000000" />
       
       {/* Canonical URL */}
-      <link rel="canonical" href={`https://www.mtumrah.com/${pageName === 'home' ? '' : pageName}`} />
+      <link rel="canonical" href={`${getBaseUrl()}/${pageName === 'home' ? '' : pageName}`} />
       
       {/* Favicon */}
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
