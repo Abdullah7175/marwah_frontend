@@ -24,15 +24,8 @@ export function CustomPackagesTab() {
   const [packages, setPackages] = useState<Array<CustomPackage>>();
   const [loading, setLoading] = useState(true);
 
-  // Listen for add custom package event from header
-  useEffect(() => {
-    const handleAddCustomPackage = () => {
-      setCustomPackageToAdd(CustomPackage.getDummy());
-    };
-
-    window.addEventListener('addCustomPackage', handleAddCustomPackage);
-    return () => window.removeEventListener('addCustomPackage', handleAddCustomPackage);
-  }, []);
+  // Custom packages are submitted by users, not created by admins
+  // No add functionality needed
 
   function loadCustomPackages() {
     const props: ApiCallProps = {

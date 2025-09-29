@@ -89,13 +89,7 @@ const index: React.FC = () => {
                     }
                 };
             case 7: // Custom Packages
-                return {
-                    text: "Add Custom Package",
-                    onClick: () => {
-                        const event = new CustomEvent('addCustomPackage');
-                        window.dispatchEvent(event);
-                    }
-                };
+                return null; // Custom packages are submitted by users, not created by admins
             default:
                 return null;
         }
