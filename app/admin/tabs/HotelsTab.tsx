@@ -46,6 +46,16 @@ export function BasicTable() {
   const [hotel, setHotel] = useState<Array<Hotel>>();
   const [loading, setLoading] = useState(false);
 
+  // Listen for add hotel event from header
+  useEffect(() => {
+    const handleAddHotel = () => {
+      setHotelToAdd(Hotel.getDummy());
+    };
+
+    window.addEventListener('addHotel', handleAddHotel);
+    return () => window.removeEventListener('addHotel', handleAddHotel);
+  }, []);
+
   function loadHotels() {
     const props: ApiCallProps = {
       postUrl: GET_HOTELS,
@@ -383,16 +393,6 @@ export function BasicTable() {
     <div>
       <Toaster position="bottom-center" />
 
-      <div className="fixed top-3 right-10 shadow-sm z-20">
-        <div
-          onClick={() => {
-            setHotelToAdd(Hotel.getDummy());
-          }}
-          className="hover:cursor-pointer hover:shadow-md hover:shadow-gray-600  rounded-full bg-white px-6 py-3 text-black "
-        >
-          Add New Hotel
-        </div>
-      </div>
 
       {getAddNewHotelDialog()}
       {hotelToEdit && getEditHotelDialog()}

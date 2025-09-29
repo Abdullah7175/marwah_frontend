@@ -31,6 +31,16 @@ export function ReviewsTab() {
   const [reviews, setReviews] = useState<Array<Review>>();
   const [loading, setLoading] = useState(true);
 
+  // Listen for add testimonial event from header
+  useEffect(() => {
+    const handleAddTestimonial = () => {
+      setReviewToAdd(Blog.getInitial());
+    };
+
+    window.addEventListener('addTestimonial', handleAddTestimonial);
+    return () => window.removeEventListener('addTestimonial', handleAddTestimonial);
+  }, []);
+
 
 
   function loadReviews() {
@@ -204,16 +214,6 @@ export function ReviewsTab() {
         accept="image/*"
         onChange={(e) => handleImageChange(e)}
       />
-      <div className="fixed top-3 right-10 shadow-sm z-20">
-        <h1
-          onClick={() => {
-            setReviewToAdd(Blog.getInitial());
-          }}
-          className="hover:cursor-pointer hover:shadow-md hover:shadow-gray-600  rounded-full bg-white px-6 py-3 text-black "
-        >
-          Add New Review
-        </h1>
-      </div>
       {videoUrl && <Dialog open={videoUrl != null && videoUrl != undefined}>
         <DialogTitle>
           Playing Video

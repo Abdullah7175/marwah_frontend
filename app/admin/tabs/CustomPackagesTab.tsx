@@ -24,6 +24,16 @@ export function CustomPackagesTab() {
   const [packages, setPackages] = useState<Array<CustomPackage>>();
   const [loading, setLoading] = useState(true);
 
+  // Listen for add custom package event from header
+  useEffect(() => {
+    const handleAddCustomPackage = () => {
+      setCustomPackageToAdd(CustomPackage.getDummy());
+    };
+
+    window.addEventListener('addCustomPackage', handleAddCustomPackage);
+    return () => window.removeEventListener('addCustomPackage', handleAddCustomPackage);
+  }, []);
+
   function loadCustomPackages() {
     const props: ApiCallProps = {
       postUrl: GET_CUSTOM_PACKAGES,

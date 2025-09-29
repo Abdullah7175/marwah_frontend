@@ -36,6 +36,73 @@ const index: React.FC = () => {
         setValue(newValue);
     };
 
+    // Define add button handlers for each tab
+    const getAddButtonConfig = () => {
+        switch(value) {
+            case 1: // Categories
+                return {
+                    text: "Add Category",
+                    onClick: () => {
+                        // This will be handled by CategoriesTab
+                        const event = new CustomEvent('addCategory');
+                        window.dispatchEvent(event);
+                    }
+                };
+            case 2: // Packages
+                return {
+                    text: "Add Package",
+                    onClick: () => {
+                        const event = new CustomEvent('addPackage');
+                        window.dispatchEvent(event);
+                    }
+                };
+            case 3: // Inquiries
+                return {
+                    text: "Add Inquiry",
+                    onClick: () => {
+                        const event = new CustomEvent('addInquiry');
+                        window.dispatchEvent(event);
+                    }
+                };
+            case 4: // Blogs
+                return {
+                    text: "Add Blog",
+                    onClick: () => {
+                        const event = new CustomEvent('addBlog');
+                        window.dispatchEvent(event);
+                    }
+                };
+            case 5: // Hotels
+                return {
+                    text: "Add Hotel",
+                    onClick: () => {
+                        const event = new CustomEvent('addHotel');
+                        window.dispatchEvent(event);
+                    }
+                };
+            case 6: // Testimonials
+                return {
+                    text: "Add Testimonial",
+                    onClick: () => {
+                        const event = new CustomEvent('addTestimonial');
+                        window.dispatchEvent(event);
+                    }
+                };
+            case 7: // Custom Packages
+                return {
+                    text: "Add Custom Package",
+                    onClick: () => {
+                        const event = new CustomEvent('addCustomPackage');
+                        window.dispatchEvent(event);
+                    }
+                };
+            default:
+                return null;
+        }
+    };
+
+    const addButtonConfig = getAddButtonConfig();
+
 
     const tabs = [
         <Tab 
@@ -154,7 +221,11 @@ const index: React.FC = () => {
 
     return (
         <div className="admin-layout">
-            <AuthGuard>
+            <AuthGuard 
+                currentTab={value}
+                onAddClick={addButtonConfig?.onClick}
+                addButtonText={addButtonConfig?.text}
+            >
                 <div style={{ display: 'flex' }} >
                     <Tabs
                         orientation="vertical"

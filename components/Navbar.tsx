@@ -111,27 +111,27 @@ const Navbar = () => {
         </button>
       </div>
       {isClick &&(
-        <div className="md:hidden">
-           <ul className=" h-full sm:gap-12 gap-1 flex sm:flex-row flex-col sm:items-center ">
+        <div className="md:hidden mt-4 bg-black/50 backdrop-blur-sm rounded-lg p-4">
+           <ul className="flex flex-col gap-4">
         {NAV_LINKS.map((link) => (
-          <Link onClick={()=>location.href = link.href} href={link.href} key={link.key} className=" text-slate-200  cursor-pointer sm:pb-1.5 transition-all hover:font-bold">
+          <Link 
+            onClick={()=>{
+              location.href = link.href;
+              setisClick(false); // Close menu after clicking
+            }} 
+            href={link.href} 
+            key={link.key} 
+            className="text-slate-200 cursor-pointer py-2 px-4 rounded-md transition-all hover:font-bold hover:bg-white/10"
+          >
             {link.label}
           </Link>
         ))}
       </ul>
-      <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot">
-      {/* <Image
-                    src={'/images/truspilot.png'}
-                    alt="Trustpilot logo"
-                    width={100}
-                    height={48}
-                    quality={80}
-                    className={''}
-                    loading="lazy"
-                    // className={"transition-opacity opacity-0 duration-[2s]"}
-                    // onLoadingComplete={(image)=>image.classList.remove("opacity-0")}
-                /> */}
-      </a>
+      <div className="flex justify-center mt-4">
+        <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot" className="text-slate-200 hover:text-white transition-colors">
+          View Our Reviews on Trustpilot
+        </a>
+      </div>
         </div>
       )}
     </nav>

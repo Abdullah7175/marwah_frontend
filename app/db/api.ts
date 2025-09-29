@@ -2,7 +2,7 @@ import { Blog } from "../type/Blog";
 import CustomPackage from "../type/CustomPackage";
 import { Hotel } from "../type/Hotel";
 import { UmrahPackage } from "../type/UmrahPackage";
-import { BACKEND_BASE_URL, POST_CREATE_CUSTOM_PACKAGE, POST_CREATE_PACKAGE, POST_UPDATE_HOTEL, POST_UPDATE_PACKAGE, URL_CREATE_BLOG, URL_CREATE_HOTEL, URL_UPDATE_BLOG } from "./Routes";
+import { BACKEND_BASE_URL, POST_CREATE_CUSTOM_PACKAGE, POST_CREATE_PACKAGE, POST_UPDATE_HOTEL, POST_UPDATE_PACKAGE, URL_CREATE_BLOG, URL_CREATE_HOTEL, URL_UPDATE_BLOG, POST_CREATE_INQUIRY } from "./Routes";
 
 
 export type ApiCallProps = {
@@ -528,6 +528,26 @@ export async function updatePackageCloud(p: UmrahPackage, category_id: string, o
     };
 
     await fetch(POST_UPDATE_PACKAGE, requestOptions)
+        .then((response) => response.text())
+        .then((result) => onSuccess(result))
+        .catch((error) => onUnexpected(error)).finally(onProgressEnd);
+}
+
+export async function createInquiry(inquiry: any, onProgressStart: () => void, onProgressEnd: () => void, onSuccess: (result: any) => void, onUnexpected: (error: any) => void) {
+    onProgressStart();
+    const formdata = new FormData();
+    formdata.append("name", inquiry.name);
+    formdata.append("email", inquiry.email);
+    formdata.append("phone", inquiry.phone);
+    formdata.append("message", inquiry.message);
+
+    const requestOptions: RequestInit = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow"
+    };
+
+    await fetch(POST_CREATE_INQUIRY, requestOptions)
         .then((response) => response.text())
         .then((result) => onSuccess(result))
         .catch((error) => onUnexpected(error)).finally(onProgressEnd);

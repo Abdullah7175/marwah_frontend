@@ -11,28 +11,27 @@ const Footer = () => {
 
 
 
-        <h2 className="text-orange-400  mx-4 font-bold text-[40px] w-full text-center">
+        <h2 className="text-orange-400 mx-4 font-bold text-2xl sm:text-3xl md:text-4xl w-full text-center">
           Award-Winning Excellence
         </h2>
-        <div className='flexBetween sm:mx-40 mt-5 sm:mb-40 mb-10'>
-          <img  className='mx-2 w-24 h-28' src='/awds/img1.webp' alt="Marwah Travels award 1 - excellence recognition" loading="lazy" />
-          <img className='mx-2 w-24 h-28' src='/awds/img2.webp' alt="Marwah Travels award 2 - service quality" loading="lazy" />
-          <img  className='mx-2 w-24 h-28' src='/awds/img3.webp' alt="Marwah Travels award 3 - trusted travel services" loading="lazy" />
+        <div className='flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 mt-5 sm:mb-40 mb-10'>
+          <img className='w-20 h-24 sm:w-24 sm:h-28' src='/awds/img1.webp' alt="Marwah Travels award 1 - excellence recognition" loading="lazy" />
+          <img className='w-20 h-24 sm:w-24 sm:h-28' src='/awds/img2.webp' alt="Marwah Travels award 2 - service quality" loading="lazy" />
+          <img className='w-20 h-24 sm:w-24 sm:h-28' src='/awds/img3.webp' alt="Marwah Travels award 3 - trusted travel services" loading="lazy" />
         </div>
 
 
-        <div className="flex flex-col items-start justify-center gap-[10%] md:flex-row">
-          <Link href="/">
+        <div className="flex flex-col items-center sm:items-start justify-center gap-8 md:flex-row">
+          <Link href="/" className="flex-shrink-0">
             <img src="/logo2.png" alt="Marwah Travels Umrah logo" width={120} height={19} />
-            {/* <span className="mt-10 text-white text-3xl font-bold">Marwah Travels</span> */}
           </Link>
 
-          <div className='flex text-white flex-wrap gap-10 sm:justify-between md:flex-1'>
+          <div className='flex text-white flex-wrap gap-6 sm:gap-8 md:gap-10 sm:justify-between md:flex-1'>
             {FOOTER_LINKS.map((columns, id) => (
               <FooterColumn key={id} title={columns.title}>
-                <ul className="regular-14 flex flex-col gap-4 text-white">
+                <ul className="text-sm flex flex-col gap-3 text-white">
                   {columns.links.map((link) => (
-                    <Link href="/" key={link}>
+                    <Link href="/" key={link} className="hover:text-orange-400 transition-colors">
                       {link}
                     </Link>
                   ))}
@@ -46,7 +45,7 @@ const Footer = () => {
                   <Link
                     href="/"
                     key={link.label}
-                    className="flex gap-4 md:flex-col lg:flex-row"
+                    className="flex gap-4 md:flex-col lg:flex-row hover:text-orange-400 transition-colors"
                   >
                     <p className="whitespace-nowrap">
                       {link.label}:

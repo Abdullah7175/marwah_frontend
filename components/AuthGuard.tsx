@@ -11,9 +11,12 @@ const Typography = dynamic(() => import('@mui/material').then(mod => ({ default:
 
 interface AuthGuardProps {
     children: React.ReactNode;
+    currentTab?: number;
+    onAddClick?: () => void;
+    addButtonText?: string;
 }
 
-export default function AuthGuard({ children }: AuthGuardProps) {
+export default function AuthGuard({ children, currentTab, onAddClick, addButtonText }: AuthGuardProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
@@ -62,7 +65,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
     return (
         <div className="admin-layout">
-            {/* Admin Header with Logout */}
+            {/* Admin Header with Add Button and Logout */}
             <div className="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center">
                 <div className="flex items-center space-x-4">
                     <Typography variant="h6" className="font-semibold text-gray-800">
@@ -73,12 +76,22 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                         Marwah Travels
                     </Typography>
                 </div>
-                <button
-                    onClick={handleLogout}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                    Logout
-                </button>
+                <div className="flex items-center space-x-3">
+                    {onAddClick && addButtonText && (
+                        <button
+                            onClick={onAddClick}
+                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                        >
+                            {addButtonText}
+                        </button>
+                    )}
+                    <button
+                        onClick={handleLogout}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                        Logout
+                    </button>
+                </div>
             </div>
             {children}
         </div>

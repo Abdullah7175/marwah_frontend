@@ -105,9 +105,9 @@ export default function Blogs() {
         <meta name="twitter:description" content="Stay informed with Marwah Travels Umrah's blog—your source for expert Umrah tips, spiritual travel insights, visa guidance, and pilgrimage preparation. Read now." />
       </Head>
       {getUserFrame(
-        <div className="w-full sm:m-6 p-6  flex flex-col items-center  ">
+        <div className="w-full p-4 sm:p-6 flex flex-col items-center">
           {loading ? (
-            <div>
+            <div className="flex justify-center items-center min-h-[400px]">
               <CircularProgress
                 size={90}
                 sx={{
@@ -116,19 +116,18 @@ export default function Blogs() {
                   borderWidth: 3,
                   padding: 1,
                 }}
-                className="mt-48"
               />
             </div>
           ) : (
-            <Grid container gap={1}>
+            <Grid container spacing={2} className="max-w-7xl">
               {blogs?.map((blog, id) => (
-                <Grid key={id} item marginTop={1} sm={2.7}>
+                <Grid key={id} item xs={12} sm={6} md={4}>
                   <Link href="/pages/blog_detail">
                     <Card
                       onClick={() => {
                         store.dispatch(selectBlog(blog));
                       }}
-                      className="hover:cursor-pointer hover:border-white hover:border-2 hover:shadow-white hover:shadow-xl"
+                      className="hover:cursor-pointer hover:border-white hover:border-2 hover:shadow-white hover:shadow-xl transition-all duration-300"
                       sx={{ borderRadius: 1, backgroundColor: transparentBlack }}
                       elevation={4}
                     >
@@ -140,28 +139,31 @@ export default function Blogs() {
                         className="w-full h-68"
                       /> */}
 
-                      <div className="px-4   ">
-                        <div className="flex flex-col">
-                          <h2 className="text-bold text-[20px] mb-2 text-slate-100 pt-2 font-bold">
+                      <div className="p-4">
+                        <div className="flex flex-col h-full">
+                          <h2 className="text-lg sm:text-xl font-bold mb-3 text-slate-100 pt-2 line-clamp-2">
                             {blog.title}
                           </h2>
 
-                          <Button
-                            variant="contained"
-                            sx={{
-                              borderRadius: 10,
-                              backgroundColor: "white",
-                              color: "black",
-                            }}
-                          >
-                            Read More
-                          </Button>
-                          <SocialShare 
-                            url={`https://www.mtumrah.com/pages/blog_detail`}
-                            title={blog.title}
-                            description="Read this Umrah travel guide from Marwah Travels"
-                          />
-                          <Space h={10} />
+                          <div className="mt-auto">
+                            <Button
+                              variant="contained"
+                              sx={{
+                                borderRadius: 10,
+                                backgroundColor: "white",
+                                color: "black",
+                                width: "100%",
+                                mb: 2
+                              }}
+                            >
+                              Read More
+                            </Button>
+                            <SocialShare 
+                              url={`https://www.mtumrah.com/pages/blog_detail`}
+                              title={blog.title}
+                              description="Read this Umrah travel guide from Marwah Travels"
+                            />
+                          </div>
                         </div>
                       </div>
                     </Card>

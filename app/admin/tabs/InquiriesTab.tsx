@@ -16,10 +16,22 @@ import {
 import { IconUserCircle } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import AddInquiryDialog from "../addInquiryDialog";
 
 export function InquiriesTab() {
   const [inquires, setInquiries] = useState<Array<Inquiry>>();
   const [loading, setLoading] = useState(true);
+  const [inquiryToAdd, setInquiryToAdd] = useState<any>(undefined);
+
+  // Listen for add inquiry event from header
+  useEffect(() => {
+    const handleAddInquiry = () => {
+      setInquiryToAdd({});
+    };
+
+    window.addEventListener('addInquiry', handleAddInquiry);
+    return () => window.removeEventListener('addInquiry', handleAddInquiry);
+  }, []);
 
   function loadInquiries() {
     const props: ApiCallProps = {
@@ -256,6 +268,13 @@ export function InquiriesTab() {
 
       {inquiryToView && getInquiryViewDialog()}
       {inquiryToEdit && getInquiryEditDialog()}
+      {inquiryToAdd && (
+        <AddInquiryDialog
+          inquiryToAdd={inquiryToAdd}
+          setInquiryToAdd={setInquiryToAdd}
+          refreshInquiries={loadInquiries}
+        />
+      )}
 
       <h1 className="font-bold text-black text-2xl px-5 bg-yellow-50 py-5 ">
         User Inquiries

@@ -56,6 +56,20 @@ export function BasicTable() {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [loading, setLoading] = useState(false);
+
+  // Listen for add package event from header
+  useEffect(() => {
+    const handleAddPackage = () => {
+      if(selectedCategory==''){
+        toast.error("Please select category to add new package in that")
+        return;
+      }
+      setPackageToAdd(UmrahPackage.getDummy());
+    };
+
+    window.addEventListener('addPackage', handleAddPackage);
+    return () => window.removeEventListener('addPackage', handleAddPackage);
+  }, [selectedCategory]);
   function parseData(data: any) {
     const packsResponse: PacksResponse = data.map((category: any) => ({
       id: category.id,
@@ -399,20 +413,6 @@ export function BasicTable() {
   }
   return (
     <div>
-      <div className="fixed top-3 right-10 shadow-sm z-20">
-        <h1
-          onClick={() => {
-            if(selectedCategory==''){
-              toast.error("Please select category to add new package in that")
-              return;
-            }
-            setPackageToAdd(UmrahPackage.getDummy());
-          }}
-          className="hover:cursor-pointer hover:shadow-md hover:shadow-gray-600  rounded-full bg-white px-6 py-3 text-black "
-        >
-          Add New Package
-        </h1>
-      </div>
 
       {packageToDelete && getDeleteCategoryDialog()}
       {packageToAdd && getAddNewPackageDialog()}

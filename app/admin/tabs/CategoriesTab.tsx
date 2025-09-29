@@ -22,6 +22,16 @@ export function BasicTable() {
   const [categories, setCategories] = useState<Array<Category>>();
   const [loading, setLoading] = useState(false);
 
+  // Listen for add category event from header
+  useEffect(() => {
+    const handleAddCategory = () => {
+      setCategoryToAdd(Category.getDummy());
+    };
+
+    window.addEventListener('addCategory', handleAddCategory);
+    return () => window.removeEventListener('addCategory', handleAddCategory);
+  }, []);
+
 
 
   function loadCategories() {
@@ -248,14 +258,6 @@ export function BasicTable() {
 
   return (
     <div>
-      <div
-        className="fixed top-3 right-10 shadow-sm z-20"
-
-      >
-        <div onClick={() => { setCategoryToAdd(Category.getDummy()) }} className="hover:cursor-pointer hover:shadow-md hover:shadow-gray-600  rounded-full bg-white px-6 py-3 text-black ">Add Category</div>
-
-
-      </div>
 
 
       {getAddNewCategoryDialog()}

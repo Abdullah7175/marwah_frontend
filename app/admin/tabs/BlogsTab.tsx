@@ -27,6 +27,16 @@ export function BlogsTab() {
   const [inquires, setBlogs] = useState<Array<Blog>>();
   const [loading, setLoading] = useState(true);
 
+  // Listen for add blog event from header
+  useEffect(() => {
+    const handleAddBlog = () => {
+      setBlogToAdd(Blog.getInitial());
+    };
+
+    window.addEventListener('addBlog', handleAddBlog);
+    return () => window.removeEventListener('addBlog', handleAddBlog);
+  }, []);
+
 
 
   function loadBlogs() {
@@ -282,16 +292,6 @@ export function BlogsTab() {
         accept="image/*"
         onChange={(e) => handleImageChange(e)}
       />
-      <div className="fixed top-3 right-10 shadow-sm z-20">
-        <h1
-          onClick={() => {
-            setBlogToAdd(Blog.getInitial());
-          }}
-          className="hover:cursor-pointer hover:shadow-md hover:shadow-gray-600  rounded-full bg-white px-6 py-3 text-black "
-        >
-          Add New Blog
-        </h1>
-      </div>
       <Toaster position="bottom-center" />
 
       {blogToAdd && getAddNewBlogDialog()}

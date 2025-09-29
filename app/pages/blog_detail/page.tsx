@@ -15,7 +15,12 @@ import ArticleSchema from "@/components/ArticleSchema";
 export default function BlogDetail() {
 
     const blog = store.getState().home.selectedBlog;
-    const pageUrl = `https://www.mtumrah.com/pages/blog_detail`; // if blog has slug, replace accordingly
+    const pageUrl = `https://www.mtumrah.com/pages/blog_detail`;
+    
+    // Fallback content if blog is not available
+    const blogTitle = blog?.title || "Umrah Travel Guide | Marwah Travels";
+    const blogDescription = blog?.elements?.[0]?.value?.toString()?.slice(0, 150) ?? "Expert Umrah travel insights and spiritual journey guidance from Marwah Travels. Read our comprehensive guides for your pilgrimage.";
+    const blogImage = blog?.image || "/logo2.png";
 
     function getElementTS(s: string) {
         if (s == "heading") {
@@ -49,23 +54,36 @@ export default function BlogDetail() {
     return (
         <>
             <Head>
-                <title>{blog.title}</title>
-                <meta name="description" content={blog?.elements?.[0]?.value?.toString()?.slice(0, 150) ?? "Umrah blog article by Marwah Travels"} />
+                <title>{blogTitle}</title>
+                <meta name="description" content={blogDescription} />
+                <meta name="keywords" content="umrah blog, umrah guide, spiritual journey, pilgrimage tips, makkah madina travel, umrah insights" />
+                <meta name="author" content="Marwah Travels" />
+                <meta name="robots" content="index, follow" />
+                
+                {/* Open Graph */}
                 <meta property="og:type" content="article" />
-                <meta property="og:title" content={blog.title} />
-                <meta property="og:description" content={blog?.elements?.[0]?.value?.toString()?.slice(0, 150) ?? "Umrah blog article by Marwah Travels"} />
+                <meta property="og:title" content={blogTitle} />
+                <meta property="og:description" content={blogDescription} />
                 <meta property="og:url" content={pageUrl} />
-                <meta name="twitter:title" content={blog.title} />
-                <meta name="twitter:description" content={blog?.elements?.[0]?.value?.toString()?.slice(0, 150) ?? "Umrah blog article by Marwah Travels"} />
+                <meta property="og:image" content={`https://www.mtumrah.com${blogImage}`} />
+                <meta property="og:site_name" content="Marwah Travels Umrah" />
+                
+                {/* Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={blogTitle} />
+                <meta name="twitter:description" content={blogDescription} />
+                <meta name="twitter:image" content={`https://www.mtumrah.com${blogImage}`} />
+                
+                {/* Canonical */}
                 <link rel="canonical" href={pageUrl} />
             </Head>
             <ArticleSchema
-                title={blog.title}
-                description={blog?.elements?.[0]?.value?.toString()?.slice(0, 150) ?? "Umrah blog article by Marwah Travels"}
+                title={blogTitle}
+                description={blogDescription}
                 author="Marwah Travels"
-                datePublished={new Date().toISOString()}
-                dateModified={new Date().toISOString()}
-                image={`https://www.mtumrah.com/logo2.png`}
+                datePublished={blog?.created_at ? new Date(blog.created_at).toISOString() : new Date().toISOString()}
+                dateModified={blog?.updated_at ? new Date(blog.updated_at).toISOString() : new Date().toISOString()}
+                image={`https://www.mtumrah.com${blogImage}`}
                 url={pageUrl}
             />
             {getUserFrame(<Card className=" p-10" sx={{ borderRadius: 1, backgroundColor: transparentBlack }} elevation={4}>
@@ -76,12 +94,12 @@ export default function BlogDetail() {
                     <div className="px-4 mt-4   ">
                         <div className="flex flex-col">
                             <h1 className='text-bold text-[20px] mb-2 text-slate-100 pt-2 font-bold'>
-                                {blog.title}
+                                {blogTitle}
                             </h1>
                             <Divider sx={{ backgroundColor: 'white' }} />
-                            {...blog.elements.map((e) => buildElement(e))}
+                            {blog?.elements?.map((e) => buildElement(e))}
                             <Space h={10} />
-                            <SocialShare url={pageUrl} title={blog.title} description={blog?.elements?.[0]?.value?.toString()?.slice(0, 150) ?? "Umrah blog article by Marwah Travels"} />
+                            <SocialShare url={pageUrl} title={blogTitle} description={blogDescription} />
                         </div>
                     </div>
                 </Slide>

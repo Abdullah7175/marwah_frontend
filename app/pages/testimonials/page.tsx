@@ -55,32 +55,34 @@ export default function TestimonialsPage() {
             </Head>
             {getUserFrame(
                 <div className="mt-10  shadow-sm shadow-white py-10">
-                    <h1 className="text-white  font-bold text-[30px] mb-10 w-full text-center ">
+                    <h1 className="text-white font-bold text-2xl sm:text-3xl md:text-4xl mb-10 w-full text-center">
                         Our Testimonials
                     </h1>
 
-                    <Grid container spacing={2} className="sm:px-10 flex sm:flex-row flex-col gap-2 items-center justify-center">
+                    <Grid container spacing={2} className="px-4 sm:px-10 flex flex-col sm:flex-row gap-4 items-center justify-center">
                         {reviews?.map((e, index) => (
-                            <Grid key={index}>
-                                <div className="flex  flex-col rounded-xl w-80   bg-white p-3">
+                            <Grid key={index} item xs={12} sm={6} md={4}>
+                                <div className="flex flex-col rounded-xl w-full max-w-sm bg-white p-4 shadow-lg">
                                     <ReactPlayer
-                                        width={300}
+                                        width="100%"
                                         style={{ borderRadius: 10 }}
                                         height={200}
                                         url={FILE_BASE_URL + e.video_url}
                                         controls
                                     />
-                                    <span className="font-bold mt-2">{e.user_name}</span>
-                                    <div className="w-36">
+                                    <span className="font-bold mt-3 text-lg">{e.user_name}</span>
+                                    <div className="flex gap-1 mt-1">
                                         <Star fontSize="medium" htmlColor="orange" />
                                         <Star fontSize="medium" htmlColor="orange" />
                                         <Star fontSize="medium" htmlColor="orange" />
                                         <Star fontSize="medium" htmlColor="orange" />
                                         <Star fontSize="medium" htmlColor="orange" />
                                     </div>
-                                    <Marquee pauseOnClick className="mt-1">
-                                        <span>{e.detail}</span>
-                                    </Marquee>
+                                    <div className="mt-2 text-sm text-gray-700">
+                                        <Marquee pauseOnClick speed={30}>
+                                            <span>{e.detail}</span>
+                                        </Marquee>
+                                    </div>
                                 </div>
                             </Grid>
                         ))}
