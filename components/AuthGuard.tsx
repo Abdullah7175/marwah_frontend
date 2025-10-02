@@ -19,19 +19,37 @@ interface AuthGuardProps {
 export default function AuthGuard({ children, currentTab, onAddClick, addButtonText }: AuthGuardProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [redirecting, setRedirecting] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
+                // First check if token exists in localStorage
+                const token = authService.getToken();
+                if (!token) {
+                    console.log('No token found, redirecting to login');
+                    setRedirecting(true);
+                    router.push('/admin/login');
+                    setLoading(false);
+                    return;
+                }
+
+                // Verify token with server
                 const user = await authService.checkAuth();
                 if (user) {
+                    console.log('User authenticated:', user);
                     setIsAuthenticated(true);
                 } else {
+                    console.log('Authentication failed, redirecting to login');
+                    setRedirecting(true);
                     router.push('/admin/login');
                 }
             } catch (error) {
                 console.error('Auth check error:', error);
+                // Clear any invalid tokens
+                authService.logout();
+                setRedirecting(true);
                 router.push('/admin/login');
             } finally {
                 setLoading(false);
@@ -53,6 +71,20 @@ export default function AuthGuard({ children, currentTab, onAddClick, addButtonT
                     <CircularProgress size={60} className="mb-4" />
                     <Typography variant="h6" className="text-gray-600">
                         Verifying authentication...
+                    </Typography>
+                </Box>
+            </Box>
+        );
+    }
+
+    if (redirecting || (!isAuthenticated && !loading)) {
+        // Show redirecting message if we're redirecting or not authenticated
+        return (
+            <Box className="min-h-screen flex items-center justify-center bg-gray-100">
+                <Box className="text-center">
+                    <CircularProgress size={60} className="mb-4" />
+                    <Typography variant="h6" className="text-gray-600">
+                        {redirecting ? 'Redirecting to login...' : 'Authentication required'}
                     </Typography>
                 </Box>
             </Box>

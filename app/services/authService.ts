@@ -38,12 +38,23 @@ class AuthService {
     // Check if user is authenticated
     async checkAuth() {
         const token = localStorage.getItem('admin_token');
-        if (!token) return false;
+        if (!token) {
+            console.log('No token found in localStorage');
+            return false;
+        }
 
         try {
             const user = await this.getCurrentUser(token);
-            return user;
+            if (user && user.id) {
+                console.log('User authenticated successfully');
+                return user;
+            } else {
+                console.log('Invalid user data received');
+                this.logout();
+                return false;
+            }
         } catch (error) {
+            console.error('Token validation failed:', error);
             // Token is invalid, remove it
             this.logout();
             return false;
@@ -64,11 +75,18 @@ class AuthService {
 
         if (response.ok) {
             const userData = await response.json();
-            // Update stored user data
-            localStorage.setItem('admin_user', JSON.stringify(userData));
-            return userData;
+            // Validate user data structure
+            if (userData && userData.id && userData.email) {
+                // Update stored user data
+                localStorage.setItem('admin_user', JSON.stringify(userData));
+                return userData;
+            } else {
+                throw new Error('Invalid user data received from server');
+            }
+        } else if (response.status === 401) {
+            throw new Error('Token expired or invalid');
         } else {
-            throw new Error('Unauthorized');
+            throw new Error(`Server error: ${response.status}`);
         }
     }
 

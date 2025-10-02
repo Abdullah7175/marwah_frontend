@@ -8,6 +8,10 @@ import Space from "./Space";
 import { WhatsApp } from "@mui/icons-material";
 export default function FloatingComponents() {
 
+    const handleTrustpilotClick = () => {
+        window.open('https://www.trustpilot.com/review/mtumrah.com', '_blank', 'noopener,noreferrer');
+      };
+
 
     return (
         <div className="flex" >
@@ -15,6 +19,20 @@ export default function FloatingComponents() {
                 className="fixed sm:bottom-5 bottom-2 sm:right-5  right-0 shadow-lg z-40"
 
             >
+                <Button
+                    onClick={handleTrustpilotClick}
+                    type="button"
+                    child={<Image
+                        src="/images/trustpilot_star.png"
+                        alt="Trustpilot rating"
+                        width={32}
+                        height={32}
+                        className="transition-transform duration-200 group-hover:scale-110"
+                      />}
+                    variant="btn_white"
+                />
+                <Space h={10} />
+
                 <Button
                     onClick={() => { window.location.href = "tel:+16463895945"; }}
 
