@@ -1,5 +1,7 @@
+import { API_BASE_URL } from '../db/Routes';
+
 class AuthService {
-    private baseUrl = 'http://98.82.201.1:8000/api';
+    private baseUrl = API_BASE_URL;
 
     // Login function
     async login(email: string, password: string) {

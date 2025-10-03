@@ -1,5 +1,5 @@
 // Simple test to check if the packages API is working
-const API_URL = "http://98.82.201.1:8000/api/web/packs";
+const API_URL = "https://mtumrah.com/api/web/packs";
 
 console.log("Testing API endpoint:", API_URL);
 

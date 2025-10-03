@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '../../db/Routes';
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState('');
@@ -25,7 +26,7 @@ export default function AdminLoginPage() {
         setError('');
 
         try {
-            const response = await fetch('http://98.82.201.1:8000/api/login', {
+            const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
