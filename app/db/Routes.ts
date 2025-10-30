@@ -12,6 +12,8 @@ const getBackendConfig = () => {
         APP_URL: "https://mtumrah.com",
         BACKEND_BASE_URL: "https://mtumrah.com/api",
         API_BASE_URL: "https://mtumrah.com/api"
+
+        
       };
     }
   }

@@ -23,7 +23,7 @@ const nextConfig = {
       {
         source: '/api/:path*',
         destination: process.env.NODE_ENV === 'production' && process.env.USE_HTTPS === 'true' 
-          ? 'https://mtumrah.com/api/:path*' 
+          ? 'https://www.mtumrah.com/api/:path*' 
           : 'http://98.82.201.1:8000/api/:path*',
       },
     ];
@@ -41,7 +41,7 @@ const nextConfig = {
               value: 'http',
             },
           ],
-          destination: 'https://mtumrah.com/:path*',
+          destination: 'https://www.mtumrah.com/:path*',
           permanent: true,
         },
       ];
