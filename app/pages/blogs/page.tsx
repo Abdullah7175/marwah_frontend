@@ -87,6 +87,33 @@ export default function Blogs() {
 
     return res;
   }
+
+  function getBlogImageUrl(image: string | any): string {
+    if (!image) return '/images/kaba1.jpg';
+    
+    // If it's already a full URL (http/https)
+    if (typeof image === 'string' && (image.startsWith('http://') || image.startsWith('https://'))) {
+      return image;
+    }
+    
+    // If it's a base64 data URL
+    if (typeof image === 'string' && image.startsWith('data:')) {
+      return image;
+    }
+    
+    // If it contains blogs_images path, use FILE_BASE_URL
+    if (typeof image === 'string' && image.includes('blogs_images')) {
+      return FILE_BASE_URL + image;
+    }
+    
+    // Fallback to FILE_BASE_URL if it's a path
+    if (typeof image === 'string' && image.length > 0) {
+      return FILE_BASE_URL + image;
+    }
+    
+    // Default fallback
+    return '/images/kaba1.jpg';
+  }
   return (
     <>
       <Head>
@@ -131,13 +158,19 @@ export default function Blogs() {
                       sx={{ borderRadius: 1, backgroundColor: transparentBlack }}
                       elevation={4}
                     >
-                      {/* <img
-                        src={FILE_BASE_URL + blog.image ?? "/kaba_image.jpg"}
-                        width={720}
-                        height={500}
-                        alt={"logo"}
-                        className="w-full h-68"
-                      /> */}
+                      {blog.image && (
+                        <img
+                          src={getBlogImageUrl(blog.image)}
+                          width={720}
+                          height={500}
+                          alt={blog.title}
+                          className="w-full h-68 object-cover"
+                          onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.src = '/images/kaba1.jpg';
+                          }}
+                        />
+                      )}
 
                       <div className="p-4">
                         <div className="flex flex-col h-full">

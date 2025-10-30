@@ -51,6 +51,33 @@ export default function BlogDetail() {
         return <Slide>{res}</Slide>;
     }
 
+    function getBlogImageUrl(image: string | any): string {
+        if (!image) return '/images/kaba1.jpg';
+        
+        // If it's already a full URL (http/https)
+        if (typeof image === 'string' && (image.startsWith('http://') || image.startsWith('https://'))) {
+            return image;
+        }
+        
+        // If it's a base64 data URL
+        if (typeof image === 'string' && image.startsWith('data:')) {
+            return image;
+        }
+        
+        // If it contains blogs_images path, use FILE_BASE_URL
+        if (typeof image === 'string' && image.includes('blogs_images')) {
+            return FILE_BASE_URL + image;
+        }
+        
+        // Fallback to FILE_BASE_URL if it's a path
+        if (typeof image === 'string' && image.length > 0) {
+            return FILE_BASE_URL + image;
+        }
+        
+        // Default fallback
+        return '/images/kaba1.jpg';
+    }
+
     return (
         <>
             <Head>
@@ -87,9 +114,21 @@ export default function BlogDetail() {
                 url={pageUrl}
             />
             {getUserFrame(<Card className=" p-10" sx={{ borderRadius: 1, backgroundColor: transparentBlack }} elevation={4}>
-                <Slide>
-                    {/* <img src={FILE_BASE_URL + blog.image ?? "/kaba_image.jpg"} width={920} height={600} alt={blog.title+" main image"} className="w-full" /> */}
-                </Slide>
+                {blog?.image && (
+                    <Slide>
+                        <img 
+                            src={getBlogImageUrl(blog.image)} 
+                            width={920} 
+                            height={600} 
+                            alt={blog?.title + " main image"} 
+                            className="w-full h-auto rounded-lg mb-4" 
+                            onError={(e) => {
+                                const img = e.target as HTMLImageElement;
+                                img.src = '/images/kaba1.jpg';
+                            }}
+                        />
+                    </Slide>
+                )}
                 <Slide direction="right">
                     <div className="px-4 mt-4   ">
                         <div className="flex flex-col">
