@@ -162,7 +162,7 @@ const CustomPackageForm = () => {
   function getHotelTotal(e: Hotel) {
     var nights = parseInt(formData.numberOfNightsMadinah || "0");
     var travelers = parseInt(formData.numberOfTravelers || "0");
-    var charges = typeof e.charges === 'number' ? e.charges : parseFloat(e.charges.toString()) || 0;
+    var charges = typeof e.charges === 'number' ? e.charges : (parseFloat(String(e.charges)) || 0);
     var value = nights * travelers * charges;
     if (isNaN(value) || value < 0) value = 0;
     return value.toFixed(2) + " " + (e.currency || "USD");
@@ -178,7 +178,7 @@ const CustomPackageForm = () => {
       var travelers = parseFloat(formData.numberOfTravelers || "0");
       var madinahCharges = typeof madinaSelectedHotel.charges === 'number' 
         ? madinaSelectedHotel.charges 
-        : parseFloat(madinaSelectedHotel.charges.toString()) || 0;
+        : (parseFloat(String(madinaSelectedHotel.charges)) || 0);
       
       var madinahTotal = madinahNights * travelers * madinahCharges;
       if (!isNaN(madinahTotal) && madinahTotal > 0) {
@@ -190,7 +190,7 @@ const CustomPackageForm = () => {
       var makkahTravelers = parseFloat(formData.numberOfTravelers || "0");
       var makkahCharges = typeof makkahSelectedHotel.charges === 'number'
         ? makkahSelectedHotel.charges
-        : parseFloat(makkahSelectedHotel.charges.toString()) || 0;
+        : (parseFloat(String(makkahSelectedHotel.charges)) || 0);
       
       var makkahTotal = makkahNights * makkahTravelers * makkahCharges;
       if (!isNaN(makkahTotal) && makkahTotal > 0) {
