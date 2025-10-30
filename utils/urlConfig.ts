@@ -5,7 +5,7 @@ export const getBaseUrl = () => {
     const isDomain = window.location.hostname === 'mtumrah.com' || window.location.hostname === 'www.mtumrah.com';
     
     if (isHttps && isDomain) {
-      return 'https://mtumrah.com';
+      return 'https://www.mtumrah.com';
     }
   }
   
@@ -20,7 +20,7 @@ export const getApiBaseUrl = () => {
     const isDomain = window.location.hostname === 'mtumrah.com' || window.location.hostname === 'www.mtumrah.com';
     
     if (isHttps && isDomain) {
-      return 'https://mtumrah.com/api';
+      return 'https://www.mtumrah.com/api';
     }
   }
   
@@ -35,7 +35,7 @@ export const getBackendBaseUrl = () => {
     const isDomain = window.location.hostname === 'mtumrah.com' || window.location.hostname === 'www.mtumrah.com';
     
     if (isHttps && isDomain) {
-      return 'https://mtumrah.com/api';
+      return 'https://www.mtumrah.com/api';
     }
   }
   

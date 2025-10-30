@@ -18,9 +18,9 @@ export const getEnvironmentConfig = (): EnvironmentConfig => {
   // Production with SSL
   if (isHttps && isDomain) {
     return {
-      APP_URL: 'https://mtumrah.com',
-      API_URL: 'https://mtumrah.com/api',
-      BACKEND_URL: 'https://mtumrah.com/api',
+      APP_URL: 'https://www.mtumrah.com',
+      API_URL: 'https://www.mtumrah.com/api',
+      BACKEND_URL: 'https://www.mtumrah.com/api',
       USE_HTTPS: true,
       NODE_ENV: 'production'
     };

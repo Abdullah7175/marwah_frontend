@@ -10,7 +10,7 @@ const getBaseUrl = () => {
     const isDomain = window.location.hostname === 'mtumrah.com' || window.location.hostname === 'www.mtumrah.com';
     
     if (isHttps && isDomain) {
-      return 'https://mtumrah.com';
+      return 'https://www.mtumrah.com';
     }
   }
   

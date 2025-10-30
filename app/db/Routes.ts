@@ -9,9 +9,9 @@ const getBackendConfig = () => {
     
     if (isHttps && isDomain) {
       return {
-        APP_URL: "https://mtumrah.com",
-        BACKEND_BASE_URL: "https://mtumrah.com/api",
-        API_BASE_URL: "https://mtumrah.com/api"
+        APP_URL: "https://www.mtumrah.com",
+        BACKEND_BASE_URL: "https://www.mtumrah.com/api",
+        API_BASE_URL: "https://www.mtumrah.com/api"
 
         
       };
