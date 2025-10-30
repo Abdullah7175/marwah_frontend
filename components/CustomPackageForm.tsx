@@ -160,12 +160,12 @@ const CustomPackageForm = () => {
     return rounded.toFixed(1) + suffix;
   }
   function getHotelTotal(e: Hotel) {
-    var value = 0.0;
-    value =
-      parseInt(formData.numberOfNightsMadinah) *
-      parseInt(formData.numberOfTravelers) *
-      e.charges;
-    return value + "" + e.currency;
+    var nights = parseInt(formData.numberOfNightsMadinah || "0");
+    var travelers = parseInt(formData.numberOfTravelers || "0");
+    var charges = typeof e.charges === 'number' ? e.charges : parseFloat(e.charges.toString()) || 0;
+    var value = nights * travelers * charges;
+    if (isNaN(value) || value < 0) value = 0;
+    return value.toFixed(2) + " " + (e.currency || "USD");
   }
 
   const [pad, setPad] = useState<SignatureCanvas>();
@@ -174,29 +174,36 @@ const CustomPackageForm = () => {
     var value = 0.0;
     var expression = "";
     if (madinaSelectedHotel != undefined) {
-      value +=
-        parseFloat(formData.numberOfNightsMadinah) *
-        parseFloat(formData.numberOfTravelers) *
-        madinaSelectedHotel!.charges;
-      expression +=
-        " " +
-        formData.numberOfNightsMadinah +
-        " x " +
-        madinaSelectedHotel!.charges;
+      var madinahNights = parseFloat(formData.numberOfNightsMadinah || "0");
+      var travelers = parseFloat(formData.numberOfTravelers || "0");
+      var madinahCharges = typeof madinaSelectedHotel.charges === 'number' 
+        ? madinaSelectedHotel.charges 
+        : parseFloat(madinaSelectedHotel.charges.toString()) || 0;
+      
+      var madinahTotal = madinahNights * travelers * madinahCharges;
+      if (!isNaN(madinahTotal) && madinahTotal > 0) {
+        value += madinahTotal;
+      }
     }
     if (makkahSelectedHotel != undefined) {
-      value +=
-        parseFloat(formData.numberOfNightsMakkah) *
-        makkahSelectedHotel!.charges;
-      expression +=
-        " " +
-        formData.numberOfNightsMakkah +
-        " x " +
-        makkahSelectedHotel!.charges;
-    } else {
+      var makkahNights = parseFloat(formData.numberOfNightsMakkah || "0");
+      var makkahTravelers = parseFloat(formData.numberOfTravelers || "0");
+      var makkahCharges = typeof makkahSelectedHotel.charges === 'number'
+        ? makkahSelectedHotel.charges
+        : parseFloat(makkahSelectedHotel.charges.toString()) || 0;
+      
+      var makkahTotal = makkahNights * makkahTravelers * makkahCharges;
+      if (!isNaN(makkahTotal) && makkahTotal > 0) {
+        value += makkahTotal;
+      }
     }
 
-    return { total: value, expression: expression };
+    // Ensure value is never NaN
+    if (isNaN(value) || value < 0) {
+      value = 0.0;
+    }
+
+    return { total: parseFloat(value.toFixed(2)), expression: expression };
   }
 
   const [termsDialog, setTermsDialog] = useState(false);
@@ -738,7 +745,7 @@ const CustomPackageForm = () => {
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
                   <span className=" w-44 flex">Nights In Madinah</span>
-                  <span>{formData.numberOfNightsMakkah}</span>
+                  <span>{formData.numberOfNightsMadinah}</span>
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
                   <span className=" w-44 flex">Travelers</span>
@@ -803,7 +810,7 @@ const CustomPackageForm = () => {
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
                   <span className=" w-44 flex">Nights In Madinah</span>
-                  <span>{formData.numberOfNightsMakkah}</span>
+                  <span>{formData.numberOfNightsMadinah}</span>
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
                   <span className=" w-44 flex">Travelers</span>
@@ -846,13 +853,13 @@ const CustomPackageForm = () => {
 
 
                 const dataURL = pad!.toDataURL();
-                var hotel_madina_id = "-1";
-                var hotel_makkah_id = "-1";
+                var hotel_madina_id: string = "-1";
+                var hotel_makkah_id: string = "-1";
                 if (madinaSelectedHotel != null && madinaSelectedHotel != undefined) {
-                  hotel_madina_id = madinaSelectedHotel.name;
+                  hotel_madina_id = madinaSelectedHotel.id.toString();
                 }
                 if (makkahSelectedHotel != null && makkahSelectedHotel != undefined) {
-                  hotel_makkah_id = makkahSelectedHotel.name;
+                  hotel_makkah_id = makkahSelectedHotel.id.toString();
                 }
 
                 toast.promise(
@@ -875,7 +882,7 @@ const CustomPackageForm = () => {
                       updated_at: undefined,
                       travelers_visa_details: "",
                       flight_from: formData.flightFrom,
-                      total_amount_hotels: getStats().total,
+                      total_amount_hotels: (getStats().total || 0).toString(),
                       signature_image_url: dataURL,
                     }),
                     function (): void {
