@@ -173,28 +173,50 @@ const CustomPackageForm = () => {
   function getStats() {
     var value = 0.0;
     var expression = "";
+    
+    // Calculate Madinah hotel total
     if (madinaSelectedHotel != undefined) {
       var madinahNights = parseFloat(formData.numberOfNightsMadinah || "0");
       var travelers = parseFloat(formData.numberOfTravelers || "0");
-      var madinahCharges = typeof madinaSelectedHotel.charges === 'number' 
-        ? madinaSelectedHotel.charges 
-        : (parseFloat(String(madinaSelectedHotel.charges)) || 0);
+      
+      // Handle charges - could be number or string from backend
+      var madinahCharges: number;
+      if (typeof madinaSelectedHotel.charges === 'number') {
+        madinahCharges = madinaSelectedHotel.charges;
+      } else if (typeof madinaSelectedHotel.charges === 'string') {
+        // Remove currency symbols and parse
+        madinahCharges = parseFloat(madinaSelectedHotel.charges.replace(/[^0-9.-]+/g, '')) || 0;
+      } else {
+        madinahCharges = parseFloat(String(madinaSelectedHotel.charges)) || 0;
+      }
       
       var madinahTotal = madinahNights * travelers * madinahCharges;
       if (!isNaN(madinahTotal) && madinahTotal > 0) {
         value += madinahTotal;
+        console.log(`Madinah: ${madinahNights} nights × ${travelers} travelers × ${madinahCharges} = ${madinahTotal}`);
       }
     }
+    
+    // Calculate Makkah hotel total
     if (makkahSelectedHotel != undefined) {
       var makkahNights = parseFloat(formData.numberOfNightsMakkah || "0");
       var makkahTravelers = parseFloat(formData.numberOfTravelers || "0");
-      var makkahCharges = typeof makkahSelectedHotel.charges === 'number'
-        ? makkahSelectedHotel.charges
-        : (parseFloat(String(makkahSelectedHotel.charges)) || 0);
+      
+      // Handle charges - could be number or string from backend
+      var makkahCharges: number;
+      if (typeof makkahSelectedHotel.charges === 'number') {
+        makkahCharges = makkahSelectedHotel.charges;
+      } else if (typeof makkahSelectedHotel.charges === 'string') {
+        // Remove currency symbols and parse
+        makkahCharges = parseFloat(makkahSelectedHotel.charges.replace(/[^0-9.-]+/g, '')) || 0;
+      } else {
+        makkahCharges = parseFloat(String(makkahSelectedHotel.charges)) || 0;
+      }
       
       var makkahTotal = makkahNights * makkahTravelers * makkahCharges;
       if (!isNaN(makkahTotal) && makkahTotal > 0) {
         value += makkahTotal;
+        console.log(`Makkah: ${makkahNights} nights × ${makkahTravelers} travelers × ${makkahCharges} = ${makkahTotal}`);
       }
     }
 
@@ -203,6 +225,7 @@ const CustomPackageForm = () => {
       value = 0.0;
     }
 
+    console.log(`Total calculation: ${value.toFixed(2)}`);
     return { total: parseFloat(value.toFixed(2)), expression: expression };
   }
 
@@ -739,22 +762,36 @@ const CustomPackageForm = () => {
           <div className="">
             {(makkahSelectedHotel || madinaSelectedHotel) && (
               <div className="flex flex-col bg-white rounded-xl p-2 m-2">
+                {makkahSelectedHotel && (
+                  <div className="text-[16px] font-normal flex gap-2 mb-2">
+                    <span className="w-52 flex font-semibold">Makkah Hotel:</span>
+                    <span className="flex-1">{makkahSelectedHotel.name}</span>
+                  </div>
+                )}
+                {madinaSelectedHotel && (
+                  <div className="text-[16px] font-normal flex gap-2 mb-2">
+                    <span className="w-52 flex font-semibold">Madinah Hotel:</span>
+                    <span className="flex-1">{madinaSelectedHotel.name}</span>
+                  </div>
+                )}
+                <div className="border-t border-gray-300 my-2"></div>
                 <div className="text-[16px] font-normal flex gap-2">
-                  <span className="  w-52 flex">Nights In Makkah</span>
-                  <span>{formData.numberOfNightsMakkah}</span>
+                  <span className="w-52 flex">Nights In Makkah</span>
+                  <span>{formData.numberOfNightsMakkah || "0"}</span>
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
-                  <span className=" w-44 flex">Nights In Madinah</span>
-                  <span>{formData.numberOfNightsMadinah}</span>
+                  <span className="w-44 flex">Nights In Madinah</span>
+                  <span>{formData.numberOfNightsMadinah || "0"}</span>
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
-                  <span className=" w-44 flex">Travelers</span>
-                  <span>{formData.numberOfTravelers}</span>
+                  <span className="w-44 flex">Travelers</span>
+                  <span>{formData.numberOfTravelers || "0"}</span>
                 </div>
-                <div className="text-[16px]  font-normal flex gap-2">
-                  <span className=" w-44">Total</span>
-                  <span className="font-bold sm:text-[20px] text-[15px]">
-                    {getStats().total}USD
+                <div className="border-t border-gray-300 my-2"></div>
+                <div className="text-[16px] font-bold flex gap-2">
+                  <span className="w-44">Total</span>
+                  <span className="font-bold sm:text-[20px] text-[15px] text-red-600">
+                    {(makkahSelectedHotel?.currency || madinaSelectedHotel?.currency || "USD")} {getStats().total.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -804,22 +841,36 @@ const CustomPackageForm = () => {
           <div className="">
             {(makkahSelectedHotel || madinaSelectedHotel) && (
               <div className="flex flex-col bg-white rounded-xl p-2 m-2">
+                {makkahSelectedHotel && (
+                  <div className="text-[16px] font-normal flex gap-2 mb-2">
+                    <span className="w-52 flex font-semibold">Makkah Hotel:</span>
+                    <span className="flex-1">{makkahSelectedHotel.name}</span>
+                  </div>
+                )}
+                {madinaSelectedHotel && (
+                  <div className="text-[16px] font-normal flex gap-2 mb-2">
+                    <span className="w-52 flex font-semibold">Madinah Hotel:</span>
+                    <span className="flex-1">{madinaSelectedHotel.name}</span>
+                  </div>
+                )}
+                <div className="border-t border-gray-300 my-2"></div>
                 <div className="text-[16px] font-normal flex gap-2">
-                  <span className=" w-44 flex">Nights In Makkah</span>
-                  <span>{formData.numberOfNightsMakkah}</span>
+                  <span className="w-52 flex">Nights In Makkah</span>
+                  <span>{formData.numberOfNightsMakkah || "0"}</span>
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
-                  <span className=" w-44 flex">Nights In Madinah</span>
-                  <span>{formData.numberOfNightsMadinah}</span>
+                  <span className="w-44 flex">Nights In Madinah</span>
+                  <span>{formData.numberOfNightsMadinah || "0"}</span>
                 </div>
                 <div className="text-[16px] font-normal flex gap-2">
-                  <span className=" w-44 flex">Travelers</span>
-                  <span>{formData.numberOfTravelers}</span>
+                  <span className="w-44 flex">Travelers</span>
+                  <span>{formData.numberOfTravelers || "0"}</span>
                 </div>
-                <div className="text-[16px]  font-normal flex gap-2">
-                  <span className=" w-44">Total</span>
-                  <span className="font-bold sm:text-[20px] text-[15px]">
-                    {getStats().total}USD
+                <div className="border-t border-gray-300 my-2"></div>
+                <div className="text-[16px] font-bold flex gap-2">
+                  <span className="w-44">Total</span>
+                  <span className="font-bold sm:text-[20px] text-[15px] text-red-600">
+                    {(makkahSelectedHotel?.currency || madinaSelectedHotel?.currency || "USD")} {getStats().total.toFixed(2)}
                   </span>
                 </div>
               </div>
