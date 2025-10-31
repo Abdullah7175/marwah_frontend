@@ -923,7 +923,8 @@ const CustomPackageForm = () => {
                   hotel_makkah_id = makkahSelectedHotel.id.toString();
                 }
 
-                toast.promise(
+                // Wrap submitCustomPackage in a Promise so toast.promise can properly track success/error
+                const submitPromise = new Promise<void>((resolve, reject) => {
                   submitCustomPackage(
                     new CustomPackage({
                       id: -1,
@@ -951,26 +952,29 @@ const CustomPackageForm = () => {
 
                     },
                     function (): void {
-                      //end
-                      setStep(4);
+                      //end - don't set step here, only set on actual success
                     },
                     function (res: any) {
-                      //result
-
-
+                      //success - resolve promise and set step
+                      setStep(4);
+                      resolve();
                     },
                     function (e: any) {
-                      //error
-
+                      //error - reject promise, don't set step
+                      console.error("Custom package submission error:", e);
+                      reject(e);
                     }
-                  )
-                  ,
+                  );
+                });
+
+                toast.promise(
+                  submitPromise,
                   {
 
 
                     loading: 'Submitting Your Details',
-                    success: <b> Custom Package Submitted...</b>,
-                    error: <b>Something went wrong!.</b>,
+                    success: <b>Custom Package Submitted Successfully!</b>,
+                    error: <b>Failed to submit. Please try again or contact support.</b>,
 
                   }
 

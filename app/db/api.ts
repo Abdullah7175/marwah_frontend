@@ -387,9 +387,17 @@ export async function submitCustomPackage(p:CustomPackage, onStart: () => void, 
     };
     await delay(2000);
     await fetch(POST_CREATE_CUSTOM_PACKAGE, requestOptions)
-        .then((response) => response.text())
-        .then((result) => onSuccess(result))
-        .catch((error) => onUnexpected(error)).finally(onProgressEnd);
+        .then(async (response) => {
+            const result = await response.text();
+            if (!response.ok) {
+                // Handle HTTP error status (4xx, 5xx)
+                onUnexpected(new Error(`HTTP ${response.status}: ${result || response.statusText}`));
+            } else {
+                onSuccess(result);
+            }
+        })
+        .catch((error) => onUnexpected(error))
+        .finally(onProgressEnd);
 }
 
 
