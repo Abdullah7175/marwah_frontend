@@ -159,10 +159,18 @@ const CustomPackageForm = () => {
 
     return rounded.toFixed(1) + suffix;
   }
-  function getHotelTotal(e: Hotel) {
-    var nights = parseInt(formData.numberOfNightsMadinah || "0");
+  function getHotelTotal(e: Hotel, isMakkah: boolean) {
+    // Use correct nights based on hotel location
+    var nights = isMakkah 
+      ? parseInt(formData.numberOfNightsMakkah || "0")
+      : parseInt(formData.numberOfNightsMadinah || "0");
     var travelers = parseInt(formData.numberOfTravelers || "0");
-    var charges = typeof e.charges === 'number' ? e.charges : (parseFloat(String(e.charges)) || 0);
+    
+    // Handle charges - convert to string first, then parse
+    var chargesValue: number | string = e.charges || 0;
+    var chargesStr: string = String(chargesValue);
+    var charges = parseFloat(chargesStr.replace(/[^0-9.-]+/g, '')) || 0;
+    
     var value = nights * travelers * charges;
     if (isNaN(value) || value < 0) value = 0;
     return value.toFixed(2) + " " + (e.currency || "USD");
@@ -580,6 +588,11 @@ const CustomPackageForm = () => {
                               <img
                                 className="sm:w-62 sm:h-44 rounded-xl"
                                 src={FILE_BASE_URL + e.image}
+                                onError={(evt) => {
+                                  const target = evt.target as HTMLImageElement;
+                                  target.src = '/images/kaba1.jpg';
+                                }}
+                                alt={e.name}
                               />
                               <div className="gap-2 flex-col">
                                 <span className="sm:text-[25px] text-[20px]">
@@ -646,7 +659,7 @@ const CustomPackageForm = () => {
                               {makkahSelectedHotel == null
                                 ? "SELECT"
                                 : makkahSelectedHotel.id == e.id
-                                  ? getHotelTotal(e)
+                                  ? getHotelTotal(e, true)
                                   : "SELECT"}
                             </div>
                           </div>
@@ -659,11 +672,13 @@ const CustomPackageForm = () => {
                     {hotels != null
                       ? hotels!
                         .filter(
-                          (e) =>
-                            e.location.includes("madina") ||
-                            e.location.includes("Madinah") ||
-                            e.location.includes("madina") ||
-                            e.location.includes("Madinaa")
+                          (e) => {
+                            const loc = e.location.toLowerCase();
+                            return loc.includes("madina") || 
+                                   loc.includes("madinah") || 
+                                   loc.includes("medina") ||
+                                   loc.includes("medinah");
+                          }
                         )
                         .map((e) => (
                           <div className="w-full sm:flex-row flex-col flex gap-4 my-2 font-bold sm:mx-4 bg-white rounded-xl p-2 ">
@@ -671,6 +686,11 @@ const CustomPackageForm = () => {
                               <img
                                 className="sm:w-62 sm:h-44 rounded-xl"
                                 src={FILE_BASE_URL + e.image}
+                                onError={(evt) => {
+                                  const target = evt.target as HTMLImageElement;
+                                  target.src = '/images/kaba1.jpg';
+                                }}
+                                alt={e.name}
                               />
                               <div className="gap-2 flex-col">
                                 <span className="sm:text-[25px] text-[20px]">
@@ -737,7 +757,7 @@ const CustomPackageForm = () => {
                               {madinaSelectedHotel == null
                                 ? "SELECT"
                                 : madinaSelectedHotel.id == e.id
-                                  ? getHotelTotal(e)
+                                  ? getHotelTotal(e, false)
                                   : "SELECT"}
                             </div>
                           </div>

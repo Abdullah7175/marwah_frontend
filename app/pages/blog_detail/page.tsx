@@ -17,7 +17,7 @@ export default function BlogDetail() {
     const blog = store.getState().home.selectedBlog;
     const pageUrl = `https://www.mtumrah.com/pages/blog_detail`;
     
-    // Fallback content if blog is not available
+    // comitFallback content if blog is not available
     const blogTitle = blog?.title || "Umrah Travel Guide | Marwah Travels";
     const blogDescription = blog?.elements?.[0]?.value?.toString()?.slice(0, 150) ?? "Expert Umrah travel insights and spiritual journey guidance from Marwah Travels. Read our comprehensive guides for your pilgrimage.";
     const blogImage = blog?.image || "/logo2.png";
