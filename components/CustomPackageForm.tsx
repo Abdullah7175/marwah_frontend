@@ -179,16 +179,11 @@ const CustomPackageForm = () => {
       var madinahNights = parseFloat(formData.numberOfNightsMadinah || "0");
       var travelers = parseFloat(formData.numberOfTravelers || "0");
       
-      // Handle charges - could be number or string from backend
-      var madinahCharges: number;
-      if (typeof madinaSelectedHotel.charges === 'number') {
-        madinahCharges = madinaSelectedHotel.charges;
-      } else if (typeof madinaSelectedHotel.charges === 'string') {
-        // Remove currency symbols and parse
-        madinahCharges = parseFloat(madinaSelectedHotel.charges.replace(/[^0-9.-]+/g, '')) || 0;
-      } else {
-        madinahCharges = parseFloat(String(madinaSelectedHotel.charges)) || 0;
-      }
+      // Handle charges - convert to string first, then parse (handles both number and string)
+      var chargesValue: number | string = madinaSelectedHotel.charges || 0;
+      var chargesStr: string = String(chargesValue);
+      // Remove currency symbols and parse
+      var madinahCharges = parseFloat(chargesStr.replace(/[^0-9.-]+/g, '')) || 0;
       
       var madinahTotal = madinahNights * travelers * madinahCharges;
       if (!isNaN(madinahTotal) && madinahTotal > 0) {
@@ -202,16 +197,11 @@ const CustomPackageForm = () => {
       var makkahNights = parseFloat(formData.numberOfNightsMakkah || "0");
       var makkahTravelers = parseFloat(formData.numberOfTravelers || "0");
       
-      // Handle charges - could be number or string from backend
-      var makkahCharges: number;
-      if (typeof makkahSelectedHotel.charges === 'number') {
-        makkahCharges = makkahSelectedHotel.charges;
-      } else if (typeof makkahSelectedHotel.charges === 'string') {
-        // Remove currency symbols and parse
-        makkahCharges = parseFloat(makkahSelectedHotel.charges.replace(/[^0-9.-]+/g, '')) || 0;
-      } else {
-        makkahCharges = parseFloat(String(makkahSelectedHotel.charges)) || 0;
-      }
+      // Handle charges - convert to string first, then parse (handles both number and string)
+      var chargesValue: number | string = makkahSelectedHotel.charges || 0;
+      var chargesStr: string = String(chargesValue);
+      // Remove currency symbols and parse
+      var makkahCharges = parseFloat(chargesStr.replace(/[^0-9.-]+/g, '')) || 0;
       
       var makkahTotal = makkahNights * makkahTravelers * makkahCharges;
       if (!isNaN(makkahTotal) && makkahTotal > 0) {
