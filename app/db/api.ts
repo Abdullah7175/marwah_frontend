@@ -254,6 +254,7 @@ export async function createBlog(p: Blog, onStart: () => void, onProgressEnd: ()
     onStart();
     const formdata = new FormData();
     formdata.append("title", p.title);
+    formdata.append("body", p.body || '');
 
     const res = await fetch(p.image);
     if (res.ok) {
@@ -305,6 +306,7 @@ export async function updateBlogCloud(p: Blog, onStart: () => void, onProgressEn
     const formdata = new FormData();
 
     formdata.append("title", p.title);
+    formdata.append("body", p.body || '');
 
     const res = await fetch(p.image);
     if (res.ok) {

@@ -4,14 +4,16 @@ export class Blog {
   id: number;
   title: string;
   image: string | any;
+  body: string;
   created_at: string;
   updated_at: string;
   elements: BlogElement[]; // Array of BlogElement objects
 
-  constructor(id: number, title: string, image: string | null,  created_at: string, updated_at: string, elements: BlogElement[]) {
+  constructor(id: number, title: string, image: string | null, body: string, created_at: string, updated_at: string, elements: BlogElement[]) {
     this.id = id;
     this.title = title;
     this.image = image;
+    this.body = body;
     this.created_at = created_at;
     this.updated_at = updated_at;
     this.elements = elements;
@@ -24,6 +26,7 @@ export class Blog {
       null,
       '',
       '',
+      '',
       []
     )
   }
@@ -33,6 +36,7 @@ export class Blog {
       blog.id,
       blog.title,
       blog.image,
+      blog.body,
       blog.created_at,
       blog.updated_at,
       blog.elements.map(element => BlogElement.copy(element)) // Ensure deep copy of elements
@@ -48,7 +52,7 @@ export class Blog {
       data.id,
       data.title,
       data.image,
-
+      data.body || '',
       data.created_at,
       data.updated_at,
       elements
@@ -57,6 +61,6 @@ export class Blog {
 
 
   static getDummy(): Blog {
-    return new Blog(0, 'Dummy', null, '', '', []);
+    return new Blog(0, 'Dummy', null, '', '', '', []);
   }
 }

@@ -40,6 +40,22 @@ export default function BlogDetail() {
                 <div className={`text-[14px] text-white w-full px-5 bg-gray-300 h-[1px] `}>
                 </div>
             );
+        } else if (element.element_type == 'image') {
+            res = (
+                <Slide>
+                    <img
+                        src={getBlogImageUrl(element.value)}
+                        width={1024}
+                        height={720}
+                        className="w-full h-auto my-4 rounded-lg"
+                        alt="Blog content"
+                        onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.src = '/images/kaba1.jpg';
+                        }}
+                    />
+                </Slide>
+            );
         } else {
             res = (
                 <div className={`text-[14px] text-white`} style={{ whiteSpace: 'pre-wrap' }}>
@@ -130,13 +146,51 @@ export default function BlogDetail() {
                     </Slide>
                 )}
                 <Slide direction="right">
-                    <div className="px-4 mt-4   ">
+                    <div className="px-4 mt-4">
                         <div className="flex flex-col">
                             <h1 className='text-bold text-[20px] mb-2 text-slate-100 pt-2 font-bold'>
                                 {blogTitle}
                             </h1>
                             <Divider sx={{ backgroundColor: 'white' }} />
-                            {blog?.elements?.map((e) => buildElement(e))}
+                            
+                            {/* Display blog body if available */}
+                            {blog?.body && (
+                                <p className="text-white text-[16px] my-4" style={{ whiteSpace: 'pre-wrap' }}>
+                                    {blog.body}
+                                </p>
+                            )}
+                            
+                            {/* Group elements by section and display */}
+                            {(() => {
+                                if (!blog?.elements || blog.elements.length === 0) return null;
+                                
+                                const sectionsMap: { [key: string]: BlogElement[] } = {};
+                                
+                                // Group elements by section_title
+                                blog.elements.forEach((element) => {
+                                    const sectionTitle = element.section_title || 'main';
+                                    if (!sectionsMap[sectionTitle]) {
+                                        sectionsMap[sectionTitle] = [];
+                                    }
+                                    sectionsMap[sectionTitle].push(element);
+                                });
+                                
+                                return Object.entries(sectionsMap).map(([sectionTitle, elements]) => (
+                                    <div key={sectionTitle} className="mb-6">
+                                        {sectionTitle !== 'main' && (
+                                            <h2 className="text-white text-[25px] font-bold mb-4 mt-6">
+                                                {sectionTitle}
+                                            </h2>
+                                        )}
+                                        {elements
+                                            .sort((a, b) => (a.order || 0) - (b.order || 0))
+                                            .map((e, idx) => (
+                                                <div key={e.id || idx}>{buildElement(e)}</div>
+                                            ))}
+                                    </div>
+                                ));
+                            })()}
+                            
                             <Space h={10} />
                             <SocialShare url={pageUrl} title={blogTitle} description={blogDescription} />
                         </div>

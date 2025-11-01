@@ -272,7 +272,7 @@ export function BlogsTab() {
       const reader = new FileReader();
       reader.onload = () => {
         const blog = blogToAdd;
-        blog?.elements.push(new BlogElement(-1, 'image', reader.result, -1, null, null));
+        blog?.elements.push(new BlogElement(-1, 'image', reader.result, -1, null, 0, null, null));
         setBlogToAdd(blog);
         console.log(blogToAdd);
       };

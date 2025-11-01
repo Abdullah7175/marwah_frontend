@@ -192,7 +192,7 @@ export function ReviewsTab() {
       const reader = new FileReader();
       reader.onload = () => {
         const blog = reviewToAdd;
-        blog?.elements.push(new BlogElement(-1, 'image', reader.result, -1, null, null));
+        blog?.elements.push(new BlogElement(-1, 'image', reader.result, -1, null, 0, null, null));
         setReviewToAdd(blog);
         console.log(reviewToAdd);
       };
