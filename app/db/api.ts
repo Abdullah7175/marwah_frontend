@@ -245,44 +245,52 @@ export async function createHotel(p: Hotel, onStart: () => void, onProgressEnd: 
 
 
 export async function createBlog(p: Blog, onStart: () => void, onProgressEnd: () => void, onSuccess: (res: any) => any, onUnexpected: (error: any) => void) {
-
-
-
-
-
-
     onStart();
     const formdata = new FormData();
     formdata.append("title", p.title);
     formdata.append("body", p.body || '');
 
-    const res = await fetch(p.image);
-    if (res.ok) {
-        const blob = await res.blob();
-        formdata.append('image', blob, 'image.jpg');
+    if (p.image) {
+        const res = await fetch(p.image);
+        if (res.ok) {
+            const blob = await res.blob();
+            formdata.append('image', blob, 'image.jpg');
+        }
     }
 
-
-    p.elements.forEach(async (e, index) => {
-
-
+    let imageCounter = 0;
+    
+    // Process elements in order
+    for (let index = 0; index < p.elements.length; index++) {
+        const e = p.elements[index];
+        let elementValue = e.value;
+        let elementJson = e.toJson();
+        
         if (e.element_type == 'image') {
-            var key = e.value.substring(0, 5);
-            const res = await fetch(e.value);
-            if (res.ok) {
-                const blob = await res.blob();
-                formdata.append(key, blob, key);
+            // Check if this is a data URL (base64) or existing URL
+            if (typeof e.value === 'string' && e.value.startsWith('data:')) {
+                // It's a new image from file upload
+                const res = await fetch(e.value);
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const fieldName = `image_${imageCounter}`;
+                    formdata.append(fieldName, blob, `image${imageCounter}.jpg`);
+                    elementValue = fieldName;
+                    imageCounter++;
+                }
+            } else if (e.value.includes && e.value.includes('blogs_images')) {
+                // Existing image URL - keep it as is, no change needed
+            } else {
+                // Might be a field name already set
             }
-            e.value = key;
-            formdata.append("elements[" + index + "]", JSON.stringify(e.toJson()));
+            
+            // Update the value in the JSON before stringifying
+            elementJson.value = elementValue;
+            formdata.append("elements[" + index + "]", JSON.stringify(elementJson));
         } else {
-
-
             formdata.append("elements[" + index + "]", JSON.stringify(e.toJson()));
         }
-
-    })
-
+    }
 
     const requestOptions: RequestInit = {
         method: "POST",
@@ -296,45 +304,59 @@ export async function createBlog(p: Blog, onStart: () => void, onProgressEnd: ()
         .catch((error) => onUnexpected(error)).finally(onProgressEnd);
 }
 export async function updateBlogCloud(p: Blog, onStart: () => void, onProgressEnd: () => void, onSuccess: (res: any) => any, onUnexpected: (error: any) => void) {
-
-
-
-
-
-
     onStart();
     const formdata = new FormData();
 
     formdata.append("title", p.title);
     formdata.append("body", p.body || '');
 
-    const res = await fetch(p.image);
-    if (res.ok) {
-        const blob = await res.blob();
-        formdata.append('image', blob, 'image.jpg');
+    if (p.image) {
+        const res = await fetch(p.image);
+        if (res.ok) {
+            const blob = await res.blob();
+            formdata.append('image', blob, 'image.jpg');
+        }
     }
 
-
-    p.elements.forEach(async (e, index) => {
-
-
-        if (e.element_type == 'image' && !e.value.includes("blog_images")) {
-            var key = e.value.substring(0, 5);
-            const res = await fetch(e.value);
-            if (res.ok) {
-                const blob = await res.blob();
-                formdata.append(key, blob, key);
+    let imageCounter = 0;
+    
+    // Process elements in order
+    for (let index = 0; index < p.elements.length; index++) {
+        const e = p.elements[index];
+        let elementValue = e.value;
+        let elementJson = e.toJson();
+        
+        if (e.element_type == 'image') {
+            // Check if this is a new image (data URL) or existing
+            if (typeof e.value === 'string' && e.value.startsWith('data:')) {
+                // It's a new image from file upload
+                const res = await fetch(e.value);
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const fieldName = `image_${imageCounter}`;
+                    formdata.append(fieldName, blob, `image${imageCounter}.jpg`);
+                    elementValue = fieldName;
+                    imageCounter++;
+                }
+            } else if (!e.value.includes("blogs_images") && typeof e.value === 'string' && (e.value.startsWith('http://') || e.value.startsWith('https://'))) {
+                // External URL that's not a blog image - treat as new upload
+                const res = await fetch(e.value);
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const fieldName = `image_${imageCounter}`;
+                    formdata.append(fieldName, blob, `image${imageCounter}.jpg`);
+                    elementValue = fieldName;
+                    imageCounter++;
+                }
             }
-            e.value = key;
-            formdata.append("elements[" + index + "]", JSON.stringify(e.toJson()));
+            
+            // Update the value in the JSON before stringifying
+            elementJson.value = elementValue;
+            formdata.append("elements[" + index + "]", JSON.stringify(elementJson));
         } else {
-
-
             formdata.append("elements[" + index + "]", JSON.stringify(e.toJson()));
         }
-
-    })
-
+    }
 
     const requestOptions: RequestInit = {
         method: "POST",
