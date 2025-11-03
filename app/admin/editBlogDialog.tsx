@@ -455,6 +455,130 @@ function EditBlogDialog({
                         </div>
                     </div>
 
+                    {/* SEO Fields Section */}
+                    <div className="mb-6 p-4 border-2 border-green-300 rounded-lg bg-green-50">
+                        <h2 className="text-xl font-bold mb-4">SEO Settings</h2>
+                        
+                        {/* Meta Tags */}
+                        <div className="grid grid-cols-1 gap-3 mb-4">
+                            <h3 className="text-md font-semibold">Meta Tags</h3>
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="meta_title"
+                                value={blogData.meta_title || ''}
+                                label="Meta Title (Leave empty to use blog title)"
+                                placeholder={blogData.title}
+                                helperText="Recommended: 50-60 characters"
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="meta_description"
+                                value={blogData.meta_description || ''}
+                                label="Meta Description (Leave empty to auto-generate)"
+                                placeholder="Generated from blog body..."
+                                helperText="Recommended: 150-160 characters"
+                                multiline
+                                rows={2}
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="meta_keywords"
+                                value={blogData.meta_keywords || ''}
+                                label="Meta Keywords (comma separated)"
+                                placeholder="umrah, pilgrimage, makkah, madina"
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                        </div>
+
+                        {/* Open Graph Tags */}
+                        <div className="grid grid-cols-1 gap-3 mb-4">
+                            <h3 className="text-md font-semibold">Open Graph (Facebook/LinkedIn)</h3>
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="og_title"
+                                value={blogData.og_title || ''}
+                                label="OG Title (Leave empty to use meta title)"
+                                placeholder={blogData.meta_title || blogData.title}
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="og_description"
+                                value={blogData.og_description || ''}
+                                label="OG Description (Leave empty to use meta description)"
+                                placeholder={blogData.meta_description || 'Generated from blog body...'}
+                                multiline
+                                rows={2}
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="og_image"
+                                value={blogData.og_image || ''}
+                                label="OG Image URL (Leave empty to use main image)"
+                                placeholder="/storage/blogs_images/image.jpg"
+                                helperText="Optional: Custom image URL for social sharing"
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                        </div>
+
+                        {/* Twitter Card Tags */}
+                        <div className="grid grid-cols-1 gap-3">
+                            <h3 className="text-md font-semibold">Twitter Card</h3>
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="twitter_title"
+                                value={blogData.twitter_title || ''}
+                                label="Twitter Title (Leave empty to use OG title)"
+                                placeholder={blogData.og_title || blogData.meta_title || blogData.title}
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="twitter_description"
+                                value={blogData.twitter_description || ''}
+                                label="Twitter Description (Leave empty to use OG description)"
+                                placeholder={blogData.og_description || blogData.meta_description || 'Generated from blog body...'}
+                                multiline
+                                rows={2}
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                            <TextField
+                                onChange={handleChange}
+                                fullWidth
+                                name="twitter_image"
+                                value={blogData.twitter_image || ''}
+                                label="Twitter Image URL (Leave empty to use OG image)"
+                                placeholder={blogData.og_image || '/storage/blogs_images/image.jpg'}
+                                helperText="Optional: Custom image URL for Twitter"
+                                InputProps={{ sx: { borderRadius: 2 } }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Sections Management */}
+                    <div className="flex flex-col gap-4 mb-6">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-bold">Sections</h2>
+
+When you're done with your current set of changes to this file, you should call the read_lints tool with the specific file path and fix any newly introduced errors.</output>
+</result>
+</function_calls>
+
+<function_calls>
+<invoke name="todo_write">
+<parameter name="merge">true
+
                     {/* Sections Management */}
                     <div className="flex flex-col gap-4 mb-6">
                         <div className="flex justify-between items-center">

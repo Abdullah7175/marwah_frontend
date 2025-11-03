@@ -38,6 +38,17 @@ export class UmrahPackage {
     visa_duration: string;
     package_image: any;
     transport_enabled: boolean;
+    
+    // SEO fields
+    meta_title?: string;
+    meta_description?: string;
+    meta_keywords?: string;
+    og_title?: string;
+    og_description?: string;
+    og_image?: string;
+    twitter_title?: string;
+    twitter_description?: string;
+    twitter_image?: string;
 
     constructor(data: {
         id: string;
@@ -79,6 +90,15 @@ export class UmrahPackage {
         visa_duration: string;
         package_image: any;
         transport_enabled: boolean;
+        meta_title?: string;
+        meta_description?: string;
+        meta_keywords?: string;
+        og_title?: string;
+        og_description?: string;
+        og_image?: string;
+        twitter_title?: string;
+        twitter_description?: string;
+        twitter_image?: string;
     }) {
         this.id = data.id;
         this.name = data.name;
@@ -119,6 +139,15 @@ export class UmrahPackage {
         this.visa_duration = data.visa_duration;
         this.package_image = data.package_image;
         this.transport_enabled = data.transport_enabled;
+        this.meta_title = data.meta_title;
+        this.meta_description = data.meta_description;
+        this.meta_keywords = data.meta_keywords;
+        this.og_title = data.og_title;
+        this.og_description = data.og_description;
+        this.og_image = data.og_image;
+        this.twitter_title = data.twitter_title;
+        this.twitter_description = data.twitter_description;
+        this.twitter_image = data.twitter_image;
     }
     static fromJson(json: any): UmrahPackage {
         return new UmrahPackage({
@@ -161,6 +190,15 @@ export class UmrahPackage {
             dinner_enabled: Boolean(json.dinner_enabled),
             visa_duration: json.visa_duration || "",
             package_image: json.package_image || null,
+            meta_title: json.meta_title || "",
+            meta_description: json.meta_description || "",
+            meta_keywords: json.meta_keywords || "",
+            og_title: json.og_title || "",
+            og_description: json.og_description || "",
+            og_image: json.og_image || "",
+            twitter_title: json.twitter_title || "",
+            twitter_description: json.twitter_description || "",
+            twitter_image: json.twitter_image || "",
         });
     }
 
@@ -205,6 +243,15 @@ export class UmrahPackage {
             dinner_enabled: false,
             visa_duration: "",
             package_image: null,
+            meta_title: "",
+            meta_description: "",
+            meta_keywords: "",
+            og_title: "",
+            og_description: "",
+            og_image: "",
+            twitter_title: "",
+            twitter_description: "",
+            twitter_image: "",
         };
     }
 
@@ -249,6 +296,15 @@ export class UmrahPackage {
             visa_duration: '30 days',
             package_image: null,
             transport_enabled: true,
+            meta_title: "",
+            meta_description: "",
+            meta_keywords: "",
+            og_title: "",
+            og_description: "",
+            og_image: "",
+            twitter_title: "",
+            twitter_description: "",
+            twitter_image: "",
         });
     }
 

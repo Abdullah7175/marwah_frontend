@@ -147,6 +147,17 @@ export async function createPackage(p: UmrahPackage, category_id: string, onStar
     formdata.append("trans_title", p.trans_title);
     formdata.append("trans_detail", p.trans_detail);
 
+    // Add SEO fields
+    if (p.meta_title) formdata.append("meta_title", p.meta_title);
+    if (p.meta_description) formdata.append("meta_description", p.meta_description);
+    if (p.meta_keywords) formdata.append("meta_keywords", p.meta_keywords);
+    if (p.og_title) formdata.append("og_title", p.og_title);
+    if (p.og_description) formdata.append("og_description", p.og_description);
+    if (p.og_image) formdata.append("og_image", p.og_image);
+    if (p.twitter_title) formdata.append("twitter_title", p.twitter_title);
+    if (p.twitter_description) formdata.append("twitter_description", p.twitter_description);
+    if (p.twitter_image) formdata.append("twitter_image", p.twitter_image);
+
     if (p.hotel_madina_image) {
         const res = await fetch(p.hotel_madina_image);
         if (res.ok) {
@@ -256,6 +267,17 @@ export async function createBlog(p: Blog, onStart: () => void, onProgressEnd: ()
     formdata.append("title", p.title);
     formdata.append("body", p.body || '');
 
+    // Add SEO fields
+    if (p.meta_title) formdata.append("meta_title", p.meta_title);
+    if (p.meta_description) formdata.append("meta_description", p.meta_description);
+    if (p.meta_keywords) formdata.append("meta_keywords", p.meta_keywords);
+    if (p.og_title) formdata.append("og_title", p.og_title);
+    if (p.og_description) formdata.append("og_description", p.og_description);
+    if (p.og_image) formdata.append("og_image", p.og_image);
+    if (p.twitter_title) formdata.append("twitter_title", p.twitter_title);
+    if (p.twitter_description) formdata.append("twitter_description", p.twitter_description);
+    if (p.twitter_image) formdata.append("twitter_image", p.twitter_image);
+
     if (p.image) {
         const res = await fetch(p.image);
         if (res.ok) {
@@ -322,6 +344,17 @@ export async function updateBlogCloud(p: Blog, onStart: () => void, onProgressEn
 
     formdata.append("title", p.title);
     formdata.append("body", p.body || '');
+    
+    // Add SEO fields
+    if (p.meta_title) formdata.append("meta_title", p.meta_title);
+    if (p.meta_description) formdata.append("meta_description", p.meta_description);
+    if (p.meta_keywords) formdata.append("meta_keywords", p.meta_keywords);
+    if (p.og_title) formdata.append("og_title", p.og_title);
+    if (p.og_description) formdata.append("og_description", p.og_description);
+    if (p.og_image) formdata.append("og_image", p.og_image);
+    if (p.twitter_title) formdata.append("twitter_title", p.twitter_title);
+    if (p.twitter_description) formdata.append("twitter_description", p.twitter_description);
+    if (p.twitter_image) formdata.append("twitter_image", p.twitter_image);
 
     // Handle main image - upload new or keep existing
     if (p.image && typeof p.image === 'string' && p.image.startsWith('data:')) {
@@ -535,6 +568,17 @@ export async function updatePackageCloud(p: UmrahPackage, category_id: string, o
     formdata.append("visa_detail", p.visa_detail);
     formdata.append("trans_title", p.trans_title);
     formdata.append("trans_detail", p.trans_detail);
+
+    // Add SEO fields
+    if (p.meta_title) formdata.append("meta_title", p.meta_title);
+    if (p.meta_description) formdata.append("meta_description", p.meta_description);
+    if (p.meta_keywords) formdata.append("meta_keywords", p.meta_keywords);
+    if (p.og_title) formdata.append("og_title", p.og_title);
+    if (p.og_description) formdata.append("og_description", p.og_description);
+    if (p.og_image) formdata.append("og_image", p.og_image);
+    if (p.twitter_title) formdata.append("twitter_title", p.twitter_title);
+    if (p.twitter_description) formdata.append("twitter_description", p.twitter_description);
+    if (p.twitter_image) formdata.append("twitter_image", p.twitter_image);
 
     if (p.hotel_madina_image && !p.hotel_madina_image.includes('package_images')) {
         const res = await fetch(p.hotel_madina_image);

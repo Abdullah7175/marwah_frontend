@@ -971,6 +971,126 @@ function AddPackageDialog({
                         }}
                     />
                 </div>
+
+                {/* SEO Fields Section */}
+                <div className="mt-6 p-4 border-2 border-green-300 rounded-lg bg-green-50">
+                    <h2 className="text-xl font-bold mb-4">SEO Settings</h2>
+                    
+                    {/* Meta Tags */}
+                    <div className="grid grid-cols-1 gap-3 mb-4">
+                        <h3 className="text-md font-semibold">Meta Tags</h3>
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="meta_title"
+                            value={packageData.meta_title || ''}
+                            label="Meta Title (Leave empty to use package name)"
+                            placeholder={packageData.name}
+                            helperText="Recommended: 50-60 characters"
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="meta_description"
+                            value={packageData.meta_description || ''}
+                            label="Meta Description (Leave empty to auto-generate)"
+                            placeholder="Auto-generated from package details..."
+                            helperText="Recommended: 150-160 characters"
+                            multiline
+                            rows={2}
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="meta_keywords"
+                            value={packageData.meta_keywords || ''}
+                            label="Meta Keywords (comma separated)"
+                            placeholder="umrah, pilgrimage, makkah, madina, package"
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                    </div>
+
+                    {/* Open Graph Tags */}
+                    <div className="grid grid-cols-1 gap-3 mb-4">
+                        <h3 className="text-md font-semibold">Open Graph (Facebook/LinkedIn)</h3>
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="og_title"
+                            value={packageData.og_title || ''}
+                            label="OG Title (Leave empty to use meta title)"
+                            placeholder={packageData.meta_title || packageData.name}
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="og_description"
+                            value={packageData.og_description || ''}
+                            label="OG Description (Leave empty to use meta description)"
+                            placeholder={packageData.meta_description || 'Auto-generated...'}
+                            multiline
+                            rows={2}
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="og_image"
+                            value={packageData.og_image || ''}
+                            label="OG Image URL (Leave empty to use package image)"
+                            placeholder="/storage/package_images/image.jpg"
+                            helperText="Optional: Custom image URL for social sharing"
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                    </div>
+
+                    {/* Twitter Card Tags */}
+                    <div className="grid grid-cols-1 gap-3">
+                        <h3 className="text-md font-semibold">Twitter Card</h3>
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="twitter_title"
+                            value={packageData.twitter_title || ''}
+                            label="Twitter Title (Leave empty to use OG title)"
+                            placeholder={packageData.og_title || packageData.meta_title || packageData.name}
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="twitter_description"
+                            value={packageData.twitter_description || ''}
+                            label="Twitter Description (Leave empty to use OG description)"
+                            placeholder={packageData.og_description || packageData.meta_description || 'Auto-generated...'}
+                            multiline
+                            rows={2}
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            fullWidth
+                            name="twitter_image"
+                            value={packageData.twitter_image || ''}
+                            label="Twitter Image URL (Leave empty to use OG image)"
+                            placeholder={packageData.og_image || '/storage/package_images/image.jpg'}
+                            helperText="Optional: Custom image URL for Twitter"
+                            color="warning"
+                            InputProps={{ style: { borderRadius: "16px" } }}
+                        />
+                    </div>
+                </div>
             </DialogContent>
 
             <DialogActions sx={{ paddingBottom: 3 }}>
