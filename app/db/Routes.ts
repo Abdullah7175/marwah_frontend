@@ -44,6 +44,7 @@ export const UPDATE_HOTEL = API_BASE_URL +'/panel/hotel/update';
 export const GET_DELETE_PACKAGE = API_BASE_URL +'/packages/delete/';
 export const GET_DELETE_REVIEW = API_BASE_URL +'/reviews/delete/';
 export const GET_DELETE_BLOG = API_BASE_URL +'/blogs/delete/';
+export const GET_DELETE_HOTEL = API_BASE_URL +'/hotels/';
 
 export const URL_CREATE_HOTEL = API_BASE_URL +'/hotels/create';
 export const URL_CREATE_BLOG = API_BASE_URL +'/blogs/create';

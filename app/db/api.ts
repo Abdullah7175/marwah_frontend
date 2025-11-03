@@ -212,27 +212,21 @@ export async function createHotel(p: Hotel, onStart: () => void, onProgressEnd: 
     onStart();
     const formdata = new FormData();
     formdata.append("name", p.name);
+    formdata.append("location", p.location.toString());
     formdata.append("charges", p.charges.toString());
     formdata.append("rating", p.rating.toString());
-    formdata.append("location", p.location.toString());
-
-    formdata.append("currency", p.currency);
-    formdata.append("description", p.description ?? "");
-    formdata.append("email", p.email);
-
-    formdata.append("phone", p.phone);
-
-
+    formdata.append("description", p.description || "");
+    formdata.append("currency", p.currency || "USD");
+    formdata.append("email", p.email || "");
+    formdata.append("phone", p.phone || "");
     formdata.append("breakfast_enabled", p.breakfast_enabled ? '1' : '0');
     formdata.append("dinner_enabled", p.dinner_enabled ? '1' : '0');
 
-
-
-    if (p.image) {
+    if (p.image && typeof p.image === 'string' && p.image.startsWith('data:')) {
         const res = await fetch(p.image);
         if (res.ok) {
             const blob = await res.blob();
-            formdata.append("image", blob, p.image);
+            formdata.append("image", blob, 'hotel_image.jpg');
         }
     }
 
@@ -450,33 +444,36 @@ export async function submitCustomPackage(p:CustomPackage, onStart: () => void, 
 
 export async function updateHotelsCloud(p: Hotel, onStart: () => void, onProgressEnd: () => void, onSuccess: (res: any) => any, onUnexpected: (error: any) => void) {
 
-
     onStart();
     const formdata = new FormData();
-    formdata.append("id", p.id.toString());
     formdata.append("name", p.name);
+    formdata.append("location", p.location.toString());
     formdata.append("charges", p.charges.toString());
     formdata.append("rating", p.rating.toString());
-    formdata.append("location", p.location.toString());
-
-    formdata.append("currency", p.currency);
-    formdata.append("description", p.description ?? "");
-    formdata.append("email", p.email);
-
-    formdata.append("phone", p.phone);
-
-
+    formdata.append("description", p.description || "");
+    formdata.append("currency", p.currency || "USD");
+    formdata.append("email", p.email || "");
+    formdata.append("phone", p.phone || "");
     formdata.append("breakfast_enabled", p.breakfast_enabled ? '1' : '0');
     formdata.append("dinner_enabled", p.dinner_enabled ? '1' : '0');
 
-
-
-    if (p.image && !p.image.includes('hotel_images')) {
-        const res = await fetch(p.image);
-        if (res.ok) {
-            const blob = await res.blob();
-            formdata.append("image", blob, p.image);
+    if (p.image) {
+        // Only upload if it's a new image (data URL) or existing URL doesn't contain storage path
+        if (typeof p.image === 'string' && p.image.startsWith('data:')) {
+            const res = await fetch(p.image);
+            if (res.ok) {
+                const blob = await res.blob();
+                formdata.append("image", blob, 'hotel_image.jpg');
+            }
+        } else if (typeof p.image === 'string' && !p.image.includes('/storage/')) {
+            // If it's an existing URL from a different source, might need to upload
+            const res = await fetch(p.image);
+            if (res.ok) {
+                const blob = await res.blob();
+                formdata.append("image", blob, 'hotel_image.jpg');
+            }
         }
+        // If it's an existing /storage/ path, backend will keep it as-is
     }
 
     const myHeaders = new Headers();
@@ -486,13 +483,13 @@ export async function updateHotelsCloud(p: Hotel, onStart: () => void, onProgres
     }
 
     const requestOptions: RequestInit = {
-        method: "POST",
+        method: "PUT",
         body: formdata,
         headers: myHeaders,
         redirect: "follow"
     };
 
-    await fetch(POST_UPDATE_HOTEL, requestOptions)
+    await fetch(POST_UPDATE_HOTEL + '/' + p.id, requestOptions)
         .then((response) => response.text())
         .then((result) => onSuccess(result))
         .catch((error) => onUnexpected(error)).finally(onProgressEnd);
