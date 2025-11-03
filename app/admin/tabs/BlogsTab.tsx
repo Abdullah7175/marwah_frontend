@@ -333,8 +333,6 @@ export function BlogsTab() {
                 className="center flex w-full gap-1 flex-col items-center hover:cursor-pointer hover:shadow-md hover:shadow-gray-300"
                 sx={{
                   borderRadius: "4px",
-
-
                   height: 300,
                 }}
               >
@@ -343,7 +341,22 @@ export function BlogsTab() {
                   {inquiry.created_at.replace('T', ' ').split('.')[0]}
                 </h1>
 
-                {/* <img alt="blog image" className="h-48" src={BACKEND_BASE_URL + inquiry.image ?? "/kaba_image.jpg"} width={200} height={300} /> */}
+                {inquiry.image && (
+                  <img 
+                    alt="blog image" 
+                    className="h-48 w-full object-cover" 
+                    src={typeof inquiry.image === 'string' && inquiry.image.includes('blogs_images') 
+                      ? FILE_BASE_URL + inquiry.image 
+                      : typeof inquiry.image === 'string' && inquiry.image.startsWith('http')
+                      ? inquiry.image
+                      : BACKEND_BASE_URL + inquiry.image
+                    } 
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      img.src = '/images/kaba1.jpg';
+                    }}
+                  />
+                )}
 
 
                 <h1 className="w-full text-center text-[13px] font-bold text-black mt-2">

@@ -292,9 +292,16 @@ export async function createBlog(p: Blog, onStart: () => void, onProgressEnd: ()
         }
     }
 
+    const myHeaders = new Headers();
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        myHeaders.append("Authorization", `Bearer ${token}`);
+    }
+
     const requestOptions: RequestInit = {
         method: "POST",
         body: formdata,
+        headers: myHeaders,
         redirect: "follow"
     };
 
@@ -310,12 +317,17 @@ export async function updateBlogCloud(p: Blog, onStart: () => void, onProgressEn
     formdata.append("title", p.title);
     formdata.append("body", p.body || '');
 
-    if (p.image) {
+    // Handle main image - upload new or keep existing
+    if (p.image && typeof p.image === 'string' && p.image.startsWith('data:')) {
+        // New image upload
         const res = await fetch(p.image);
         if (res.ok) {
             const blob = await res.blob();
             formdata.append('image', blob, 'image.jpg');
         }
+    } else if (p.image && typeof p.image === 'string') {
+        // Existing image - send URL as a field so backend knows it's unchanged
+        formdata.append('image_url', p.image);
     }
 
     let imageCounter = 0;
@@ -338,17 +350,9 @@ export async function updateBlogCloud(p: Blog, onStart: () => void, onProgressEn
                     elementValue = fieldName;
                     imageCounter++;
                 }
-            } else if (!e.value.includes("blogs_images") && typeof e.value === 'string' && (e.value.startsWith('http://') || e.value.startsWith('https://'))) {
-                // External URL that's not a blog image - treat as new upload
-                const res = await fetch(e.value);
-                if (res.ok) {
-                    const blob = await res.blob();
-                    const fieldName = `image_${imageCounter}`;
-                    formdata.append(fieldName, blob, `image${imageCounter}.jpg`);
-                    elementValue = fieldName;
-                    imageCounter++;
-                }
             }
+            // For existing images, keep the URL as is
+            // Don't try to re-upload existing blog images
             
             // Update the value in the JSON before stringifying
             elementJson.value = elementValue;
@@ -358,9 +362,16 @@ export async function updateBlogCloud(p: Blog, onStart: () => void, onProgressEn
         }
     }
 
+    const myHeaders = new Headers();
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        myHeaders.append("Authorization", `Bearer ${token}`);
+    }
+
     const requestOptions: RequestInit = {
         method: "POST",
         body: formdata,
+        headers: myHeaders,
         redirect: "follow"
     };
 
