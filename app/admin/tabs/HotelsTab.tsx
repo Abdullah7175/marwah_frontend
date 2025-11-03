@@ -160,11 +160,10 @@ export function BasicTable() {
     if (
       p.name === "" ||
       p.currency === "" ||
-      p.charges === 0 ||
+      p.charges === "" ||
       p.description === "" ||
       p.location === "" ||
-      p.rating < 0 ||
-      p.rating > 5 ||
+      p.rating === "" ||
       p.email === "" ||
       p.phone === ""
     ) {
@@ -270,11 +269,10 @@ export function BasicTable() {
     if (
       p.name === "" ||
       p.currency === "" ||
-      p.charges === 0 ||
+      p.charges === "" ||
       p.description === "" ||
       p.location === "" ||
-      p.rating < 0 ||
-      p.rating > 5 ||
+      p.rating === "" ||
       p.email === "" ||
       p.phone === ""
     ) {

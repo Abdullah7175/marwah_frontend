@@ -212,9 +212,9 @@ export async function createHotel(p: Hotel, onStart: () => void, onProgressEnd: 
     onStart();
     const formdata = new FormData();
     formdata.append("name", p.name);
-    formdata.append("location", p.location.toString());
-    formdata.append("charges", p.charges.toString());
-    formdata.append("rating", p.rating.toString());
+    formdata.append("location", p.location);
+    formdata.append("charges", p.charges || "");
+    formdata.append("rating", p.rating || "");
     formdata.append("description", p.description || "");
     formdata.append("currency", p.currency || "USD");
     formdata.append("email", p.email || "");
@@ -447,9 +447,9 @@ export async function updateHotelsCloud(p: Hotel, onStart: () => void, onProgres
     onStart();
     const formdata = new FormData();
     formdata.append("name", p.name);
-    formdata.append("location", p.location.toString());
-    formdata.append("charges", p.charges.toString());
-    formdata.append("rating", p.rating.toString());
+    formdata.append("location", p.location);
+    formdata.append("charges", p.charges || "");
+    formdata.append("rating", p.rating || "");
     formdata.append("description", p.description || "");
     formdata.append("currency", p.currency || "USD");
     formdata.append("email", p.email || "");
