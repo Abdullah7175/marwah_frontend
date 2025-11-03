@@ -39,9 +39,16 @@ const ReviewDialog = ({ open, handleClose }:ReviewDialogProps) => {
     formData.append('video', video);
 
     try {
+        const myHeaders = new Headers();
+        const token = localStorage.getItem('admin_token');
+        if (token) {
+            myHeaders.append("Authorization", `Bearer ${token}`);
+        }
+
         const response = await fetch(URL_POST_CREATE_REVIEW, {
             method: 'POST',
             body: formData,
+            headers: myHeaders,
           });
     
           if (!response.ok) {

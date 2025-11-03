@@ -214,13 +214,18 @@ export function ReviewsTab() {
         accept="image/*"
         onChange={(e) => handleImageChange(e)}
       />
-      {videoUrl && <Dialog open={videoUrl != null && videoUrl != undefined}>
+      {videoUrl && <Dialog open={videoUrl != null && videoUrl != undefined} fullWidth maxWidth="md">
         <DialogTitle>
           Playing Video
         </DialogTitle>
         <DialogContent>
-          <div className="w-full flex">
-            <ReactPlayer controls url={videoUrl} />
+          <div className="w-full flex justify-center">
+            <ReactPlayer 
+              width="100%" 
+              height={400}
+              controls 
+              url={videoUrl} 
+            />
           </div>
         </DialogContent>
         <DialogActions>
@@ -281,8 +286,18 @@ export function ReviewsTab() {
                   {inquiry.created_at.toString()}
                 </h1>
 
-                <div onClick={() => setVideoUrl(FILE_BASE_URL + inquiry.video_url)} className="w-full flex items-center justify-center h-44">
-                  <PlayArrow fontSize="large" />
+                <div onClick={() => setVideoUrl(FILE_BASE_URL + inquiry.video_url)} className="w-full flex items-center justify-center h-44 relative bg-black rounded overflow-hidden cursor-pointer">
+                  <ReactPlayer
+                    url={FILE_BASE_URL + inquiry.video_url}
+                    width="100%"
+                    height="100%"
+                    light={true}
+                    playing={false}
+                    controls={false}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-0 transition-all">
+                    <PlayArrow fontSize="large" className="text-white drop-shadow-lg" />
+                  </div>
                 </div>
 
                 <h1 className="w-full text-center text-[16px] font-bold text-black mt-2">

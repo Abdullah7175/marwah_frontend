@@ -1,5 +1,6 @@
 import {
   BACKEND_BASE_URL,
+  FILE_BASE_URL,
   GET_BLOGS,
   GET_CATEGORIES,
   GET_HOTELS,
@@ -443,11 +444,16 @@ export function BasicTable() {
                     <img 
                         alt="" 
                         className="rounded-xl w-28 h-22" 
-                        src={BACKEND_BASE_URL+ row.image}
+                        src={typeof row.image === 'string' && row.image.includes('hotel_images') 
+                          ? FILE_BASE_URL + row.image 
+                          : typeof row.image === 'string' && row.image.startsWith('http')
+                          ? row.image
+                          : FILE_BASE_URL + (row.image || '')
+                        }
                         onError={(e) => {
-                            console.log('Hotel image failed to load:', BACKEND_BASE_URL + row.image);
+                            console.log('Hotel image failed to load:', row.image);
                             const img = e.target as HTMLImageElement;
-                            img.src = '/images/kaba1.jpg'; // Use local fallback image
+                            img.src = '/images/kaba1.jpg';
                         }}
                     />
                   </TableCell>

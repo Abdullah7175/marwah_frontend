@@ -188,9 +188,16 @@ export async function createPackage(p: UmrahPackage, category_id: string, onStar
         }
     }
 
+    const myHeaders = new Headers();
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        myHeaders.append("Authorization", `Bearer ${token}`);
+    }
+
     const requestOptions: RequestInit = {
         method: "POST",
         body: formdata,
+        headers: myHeaders,
         redirect: "follow"
     };
 
@@ -229,11 +236,16 @@ export async function createHotel(p: Hotel, onStart: () => void, onProgressEnd: 
         }
     }
 
-
+    const myHeaders = new Headers();
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        myHeaders.append("Authorization", `Bearer ${token}`);
+    }
 
     const requestOptions: RequestInit = {
         method: "POST",
         body: formdata,
+        headers: myHeaders,
         redirect: "follow"
     };
 
@@ -467,12 +479,16 @@ export async function updateHotelsCloud(p: Hotel, onStart: () => void, onProgres
         }
     }
 
-
-
+    const myHeaders = new Headers();
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        myHeaders.append("Authorization", `Bearer ${token}`);
+    }
 
     const requestOptions: RequestInit = {
         method: "POST",
         body: formdata,
+        headers: myHeaders,
         redirect: "follow"
     };
 
@@ -564,9 +580,16 @@ export async function updatePackageCloud(p: UmrahPackage, category_id: string, o
         }
     }
 
+    const myHeaders = new Headers();
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        myHeaders.append("Authorization", `Bearer ${token}`);
+    }
+
     const requestOptions: RequestInit = {
         method: "POST",
         body: formdata,
+        headers: myHeaders,
         redirect: "follow"
     };
 

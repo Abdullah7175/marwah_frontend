@@ -1,4 +1,4 @@
-import { BACKEND_BASE_URL, GET_CUSTOM_PACKAGES, GET_DELETE_CUSTOM_PACKAGES } from "@/app/db/Routes";
+import { BACKEND_BASE_URL, FILE_BASE_URL, GET_CUSTOM_PACKAGES, GET_DELETE_CUSTOM_PACKAGES } from "@/app/db/Routes";
 import { ApiCallProps, makeGetCall } from "@/app/db/api";
 import CustomPackage from "@/app/type/CustomPackage";
 import Inquiry from "@/app/type/Inquiry";
@@ -204,11 +204,20 @@ export function CustomPackagesTab() {
                   <span className="w-52 font-bold">E-Signature</span>
 
                   <img
-                    alt="CustomPackage image"
-                    className=" w-full rounded-xl"
-                    // src={BACKEND_BASE_URL + pack.signature_image_url ?? "/kaba_image.jpg"}
+                    alt="Signature"
+                    className="w-full rounded-xl object-cover"
+                    src={pack.signature_image_url && typeof pack.signature_image_url === 'string' && pack.signature_image_url.includes('signature_images')
+                      ? FILE_BASE_URL + pack.signature_image_url
+                      : pack.signature_image_url && typeof pack.signature_image_url === 'string' && pack.signature_image_url.startsWith('http')
+                      ? pack.signature_image_url
+                      : '/images/kaba1.jpg'
+                    }
                     width={200}
                     height={300}
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      img.src = '/images/kaba1.jpg';
+                    }}
                   />
                 </div>
 

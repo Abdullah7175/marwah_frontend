@@ -1,4 +1,5 @@
 import {
+  FILE_BASE_URL,
   GET_DELETE_PACKAGE,
   GET_PACKAGES,
   POST_CREATE_CATEGORY,
@@ -460,6 +461,7 @@ export function BasicTable() {
             <Table sx={{}} aria-label="simple table">
               <TableHead>
                 <TableRow>
+                  <TableCell>Image</TableCell>
                   <TableCell>Title</TableCell>
 
                   <TableCell align="right">Prize (Per Person)</TableCell>
@@ -480,6 +482,23 @@ export function BasicTable() {
                       key={row.name}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
+                      <TableCell component="th" scope="row">
+                        <img 
+                          alt={row.name} 
+                          className="rounded-xl w-28 h-22 object-cover" 
+                          src={typeof row.package_image === 'string' && row.package_image.includes('package_images') 
+                            ? FILE_BASE_URL + row.package_image 
+                            : typeof row.package_image === 'string' && row.package_image.startsWith('http')
+                            ? row.package_image
+                            : FILE_BASE_URL + (row.package_image || '')
+                          }
+                          onError={(e) => {
+                            console.log('Package image failed to load:', row.package_image);
+                            const img = e.target as HTMLImageElement;
+                            img.src = '/images/kaba1.jpg';
+                          }}
+                        />
+                      </TableCell>
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
