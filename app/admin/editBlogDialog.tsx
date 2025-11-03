@@ -570,19 +570,6 @@ function EditBlogDialog({
                     <div className="flex flex-col gap-4 mb-6">
                         <div className="flex justify-between items-center">
                             <h2 className="text-xl font-bold">Sections</h2>
-
-When you're done with your current set of changes to this file, you should call the read_lints tool with the specific file path and fix any newly introduced errors.</output>
-</result>
-</function_calls>
-
-<function_calls>
-<invoke name="todo_write">
-<parameter name="merge">true
-
-                    {/* Sections Management */}
-                    <div className="flex flex-col gap-4 mb-6">
-                        <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-bold">Sections</h2>
                             <Button
                                 onClick={addNewSection}
                                 startIcon={<IconFolderPlus />}
