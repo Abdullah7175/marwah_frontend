@@ -139,7 +139,7 @@ export async function createPackage(p: UmrahPackage, category_id: string, onStar
     formdata.append("ticket_enabled", p.ticket_enabled ? '1' : '0');
     formdata.append("breakfast_enabled", p.breakfast_enabled ? '1' : '0');
     formdata.append("dinner_enabled", p.dinner_enabled ? '1' : '0');
-    formdata.append("visa_duration", p.visa_duration ? '1' : '0');
+    formdata.append("visa_duration", p.visa_duration || '');
     formdata.append("transport_enabled", p.transport_enabled ? '1' : '0');
     formdata.append("category_id", category_id);
     formdata.append("visa_title", p.visa_title);
@@ -528,7 +528,7 @@ export async function updatePackageCloud(p: UmrahPackage, category_id: string, o
     formdata.append("ticket_enabled", p.ticket_enabled ? '1' : '0');
     formdata.append("breakfast_enabled", p.breakfast_enabled ? '1' : '0');
     formdata.append("dinner_enabled", p.dinner_enabled ? '1' : '0');
-    formdata.append("visa_duration", p.visa_duration ? '1' : '0');
+    formdata.append("visa_duration", p.visa_duration || '');
     formdata.append("transport_enabled", p.transport_enabled ? '1' : '0');
     formdata.append("category_id", category_id);
     formdata.append("visa_title", p.visa_title);

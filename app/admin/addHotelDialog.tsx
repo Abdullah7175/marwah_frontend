@@ -307,7 +307,7 @@ function AddHotelDialog({
                                 name="breakfast_enabled"
                             />
                         }
-                        label="Ticket"
+                        label="Breakfast"
                     />
 
                      <FormControlLabel
