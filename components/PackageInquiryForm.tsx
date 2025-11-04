@@ -113,14 +113,14 @@ const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({ packageData }) 
   }
 
   return (
-    <div className='w-full bg-black/40 p-6 rounded-xl backdrop-blur-sm'>
+    <div className='w-full bg-white/95 p-6 rounded-xl shadow-2xl border-2 border-orange-400'>
       <Toaster position='bottom-right' />
       
-      <h3 className='text-white font-bold text-2xl mb-4'>
+      <h3 className='text-gray-900 font-bold text-2xl mb-2'>
         Inquire About This Package
       </h3>
-      <p className='text-white/80 text-sm mb-4'>
-        Interested in {packageData.name}? Fill out the form below and our team will contact you with details.
+      <p className='text-gray-700 text-sm mb-4'>
+        Interested in <strong className='text-orange-600'>{packageData.name}</strong>? Fill out the form below and our team will contact you with details.
       </p>
 
       <Grid container spacing={2}>
@@ -134,16 +134,16 @@ const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({ packageData }) 
             disabled={loading}
             required
             sx={{
-              backgroundColor: transparentBlack,
+              backgroundColor: 'white',
               borderRadius: 1,
               '& .MuiOutlinedInput-root': {
-                color: 'white',
-                '& fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
-                '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
-                '&.Mui-focused fieldset': { borderColor: 'white' },
+                color: '#1a1a1a',
+                '& fieldset': { borderColor: '#d1d5db' },
+                '&:hover fieldset': { borderColor: '#fb923c' },
+                '&.Mui-focused fieldset': { borderColor: '#ea580c', borderWidth: '2px' },
               },
-              '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.7)' },
-              '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#ea580c', fontWeight: 'bold' },
             }}
           />
         </Grid>
@@ -159,16 +159,16 @@ const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({ packageData }) 
             disabled={loading}
             required
             sx={{
-              backgroundColor: transparentBlack,
+              backgroundColor: 'white',
               borderRadius: 1,
               '& .MuiOutlinedInput-root': {
-                color: 'white',
-                '& fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
-                '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
-                '&.Mui-focused fieldset': { borderColor: 'white' },
+                color: '#1a1a1a',
+                '& fieldset': { borderColor: '#d1d5db' },
+                '&:hover fieldset': { borderColor: '#fb923c' },
+                '&.Mui-focused fieldset': { borderColor: '#ea580c', borderWidth: '2px' },
               },
-              '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.7)' },
-              '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#ea580c', fontWeight: 'bold' },
             }}
           />
         </Grid>
@@ -183,16 +183,16 @@ const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({ packageData }) 
             disabled={loading}
             required
             sx={{
-              backgroundColor: transparentBlack,
+              backgroundColor: 'white',
               borderRadius: 1,
               '& .MuiOutlinedInput-root': {
-                color: 'white',
-                '& fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
-                '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
-                '&.Mui-focused fieldset': { borderColor: 'white' },
+                color: '#1a1a1a',
+                '& fieldset': { borderColor: '#d1d5db' },
+                '&:hover fieldset': { borderColor: '#fb923c' },
+                '&.Mui-focused fieldset': { borderColor: '#ea580c', borderWidth: '2px' },
               },
-              '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.7)' },
-              '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#ea580c', fontWeight: 'bold' },
             }}
           />
         </Grid>
@@ -210,16 +210,16 @@ const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({ packageData }) 
             required
             placeholder="Tell us about your travel plans or any specific requirements..."
             sx={{
-              backgroundColor: transparentBlack,
+              backgroundColor: 'white',
               borderRadius: 1,
               '& .MuiOutlinedInput-root': {
-                color: 'white',
-                '& fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
-                '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
-                '&.Mui-focused fieldset': { borderColor: 'white' },
+                color: '#1a1a1a',
+                '& fieldset': { borderColor: '#d1d5db' },
+                '&:hover fieldset': { borderColor: '#fb923c' },
+                '&.Mui-focused fieldset': { borderColor: '#ea580c', borderWidth: '2px' },
               },
-              '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.7)' },
-              '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+              '& .MuiInputLabel-root': { color: '#6b7280' },
+              '& .MuiInputLabel-root.Mui-focused': { color: '#ea580c', fontWeight: 'bold' },
             }}
           />
         </Grid>
@@ -236,8 +236,8 @@ const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({ packageData }) 
       </Grid>
 
       <div className='mt-4 text-center'>
-        <p className='text-white/60 text-xs'>
-          By submitting this form, you agree to be contacted by our team regarding the <strong>{packageData.name}</strong> package.
+        <p className='text-gray-600 text-xs'>
+          By submitting this form, you agree to be contacted by our team regarding the <strong className='text-orange-600'>{packageData.name}</strong> package.
         </p>
       </div>
     </div>
