@@ -1,4 +1,5 @@
 import {
+  BACKEND_BASE_URL,
   FILE_BASE_URL,
   GET_DELETE_PACKAGE,
   GET_PACKAGES,
@@ -8,6 +9,7 @@ import {
 import {
   ApiCallProps,
   createPackage,
+  makeDeleteCall,
   makeGetCall,
   makePostCall,
   updatePackageCloud,
@@ -121,7 +123,7 @@ export function BasicTable() {
   function deletePackage(pack: UmrahPackage | undefined) {
     if (pack instanceof UmrahPackage) {
       const props: ApiCallProps = {
-        postUrl: GET_DELETE_PACKAGE + pack.id,
+        postUrl: BACKEND_BASE_URL + `/packages/${pack.id}`,
         data: null,
         onStart: function (): void {
           setLoading(true);
@@ -139,7 +141,11 @@ export function BasicTable() {
       };
 
       setPackageToDelete(undefined);
-      makeGetCall(props);
+      toast.promise(makeDeleteCall(props), {
+        loading: "Deleting...",
+        success: <b>Package Deleted Successfully...</b>,
+        error: <b>Something went wrong!.</b>,
+      });
     }
   }
   function isValidEmail(email: string) {
