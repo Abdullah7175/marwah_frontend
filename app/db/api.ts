@@ -107,6 +107,57 @@ export async function makeGetCall({ postUrl, data, onStart, onProgressEnd, onSuc
     }
 }
 
+export async function makeDeleteCall({ postUrl, data, onStart, onProgressEnd, onSuccess, onUnexpected }: ApiCallProps): Promise<any> {
+    onStart();
+    
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        // Check if this is an admin API call that needs authentication
+        const isAdminApi = postUrl.includes('/api/panel/') || postUrl.includes('/api/packages/') || postUrl.includes('/api/categories/') || postUrl.includes('/api/hotels/') || postUrl.includes('/api/blogs/') || postUrl.includes('/api/reviews/') || postUrl.includes('/api/inquiries/');
+        
+        const headers: HeadersInit = {
+            'Content-Type': 'application/json',
+        };
+        
+        // Add authentication header for admin APIs
+        if (isAdminApi) {
+            const token = localStorage.getItem('admin_token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
+        
+        const response = await fetch(postUrl, {
+            method: "DELETE",
+            headers,
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+            if (response.status === 401 && isAdminApi) {
+                // Authentication expired, redirect to login
+                localStorage.removeItem('admin_token');
+                localStorage.removeItem('admin_user');
+                window.location.href = '/admin/login';
+                return;
+            }
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const responseData = await response.json();
+        onSuccess(responseData);
+        
+    } catch (error) {
+        console.error("API Error:", error);
+        onUnexpected(error);
+    } finally {
+        onProgressEnd();
+    }
+}
 
 export async function createPackage(p: UmrahPackage, category_id: string, onStart: () => void, onProgressEnd: () => void, onSuccess: (res: any) => any, onUnexpected: (error: any) => void) {
 

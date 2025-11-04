@@ -1,5 +1,5 @@
 import { BACKEND_BASE_URL,FILE_BASE_URL, GET_BLOGS, GET_DELETE_BLOG, GET_DELETE_INQUIRY, GET_DELETE_PACKAGE } from "@/app/db/Routes";
-import { ApiCallProps, createBlog, makeGetCall, updateBlogCloud } from "@/app/db/api";
+import { ApiCallProps, createBlog, makeGetCall, makeDeleteCall, updateBlogCloud } from "@/app/db/api";
 import { Blog } from "@/app/type/Blog";
 import BlogElement from "@/app/type/BlogElement";
 import Inquiry from "@/app/type/Inquiry";
@@ -137,7 +137,7 @@ export function BlogsTab() {
   function deleteBlog(blog:Blog | undefined) {
     if (blog instanceof Blog) {
       const props: ApiCallProps = {
-        postUrl: GET_DELETE_BLOG + blog.id,
+        postUrl: BACKEND_BASE_URL + `/blogs/${blog.id}`,
         data: null,
         onStart: function (): void {
           setLoading(true);
@@ -154,7 +154,7 @@ export function BlogsTab() {
         },
       };
 
-      toast.promise(makeGetCall(props), {
+      toast.promise(makeDeleteCall(props), {
         loading: "Deleting...",
         success: <b>Blog Deleted Successfully...</b>,
         error: <b>Something went wrong!.</b>,
