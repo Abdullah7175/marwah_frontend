@@ -27,6 +27,7 @@ import { Fade, Slide } from "react-awesome-reveal";
 import { store } from "../../state/store";
 import { getUserFrame } from "@/app/layout";
 import Head from "next/head";
+import PackageInquiryForm from "@/components/PackageInquiryForm";
 
 export default function PackageDetail() {
     function buildComponents(p: UmrahPackage) {
@@ -149,18 +150,30 @@ export default function PackageDetail() {
                         sx={{ borderRadius: 2 ,backgroundColor:transparentBlack}}
                         elevation={4}
                     >
-                        <Slide>
-                            <img
-                                src={FILE_BASE_URL + (packageToView.package_image ?? "")}
-                                width={720}
-                                height={300}
-                                alt={`${packageToView.name} package cover image`}
-                                className="w-full cursor-pointer"
-                            />
-                        </Slide>
-                        <div className=" grid sm:grid-cols-6 grid-cols-2 px-3 p-2">
-                            {" "}
-                            {...buildComponents(packageToView)}
+                        {/* Package Image and Inquiry Form Section */}
+                        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 p-4">
+                            {/* Package Image - Now Smaller */}
+                            <Slide>
+                                <div className="w-full">
+                                    <img
+                                        src={FILE_BASE_URL + (packageToView.package_image ?? "")}
+                                        alt={`${packageToView.name} package cover image`}
+                                        className="w-full h-auto rounded-lg object-cover"
+                                        style={{ maxHeight: '400px' }}
+                                    />
+                                    {/* Package Features Below Image */}
+                                    <div className="grid sm:grid-cols-3 grid-cols-2 gap-2 mt-4">
+                                        {...buildComponents(packageToView)}
+                                    </div>
+                                </div>
+                            </Slide>
+
+                            {/* Inquiry Form - Parallel to Image */}
+                            <Fade delay={200}>
+                                <div className="w-full">
+                                    <PackageInquiryForm packageData={packageToView} />
+                                </div>
+                            </Fade>
                         </div>
 
                         <div className="pt-4 sm:px-10 px-4 hover:cursor-pointer ">
