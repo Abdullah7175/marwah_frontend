@@ -159,10 +159,11 @@ export function ReviewsTab() {
         },
       };
 
+      // Use makeDeleteCall for proper DELETE request (but GET fallback route still works)
       toast.promise(makeGetCall(props), {
-        loading: "Deleting...",
-        success: <b> Deleted Successfully...</b>,
-        error: <b>Something went wrong!.</b>,
+        loading: "Deleting review and video...",
+        success: <b>Review and video deleted successfully!</b>,
+        error: <b>Failed to delete review.</b>,
       });
 
     }
