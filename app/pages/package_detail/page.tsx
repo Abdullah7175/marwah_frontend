@@ -152,19 +152,15 @@ export default function PackageDetail() {
                     >
                         {/* Package Image and Inquiry Form Section */}
                         <div className="grid md:grid-cols-2 grid-cols-1 gap-4 p-4">
-                            {/* Package Image - Now Smaller */}
+                            {/* Package Image - Full height without features */}
                             <Slide>
-                                <div className="w-full">
+                                <div className="w-full h-full">
                                     <img
                                         src={FILE_BASE_URL + (packageToView.package_image ?? "")}
                                         alt={`${packageToView.name} package cover image`}
-                                        className="w-full h-auto rounded-lg object-cover"
-                                        style={{ maxHeight: '400px' }}
+                                        className="w-full h-full rounded-lg object-cover"
+                                        style={{ minHeight: '500px', maxHeight: '600px' }}
                                     />
-                                    {/* Package Features Below Image */}
-                                    <div className="grid sm:grid-cols-3 grid-cols-2 gap-2 mt-4">
-                                        {...buildComponents(packageToView)}
-                                    </div>
                                 </div>
                             </Slide>
 
