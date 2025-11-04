@@ -560,6 +560,9 @@ export async function updateHotelsCloud(p: Hotel, onStart: () => void, onProgres
         // If it's an existing /storage/ path, backend will keep it as-is
     }
 
+    // Laravel has issues with PUT + multipart/form-data, so use POST with _method override
+    formdata.append('_method', 'PUT');
+    
     const myHeaders = new Headers();
     const token = localStorage.getItem('admin_token');
     if (token) {
@@ -567,7 +570,7 @@ export async function updateHotelsCloud(p: Hotel, onStart: () => void, onProgres
     }
 
     const requestOptions: RequestInit = {
-        method: "PUT",
+        method: "POST",
         body: formdata,
         headers: myHeaders,
         redirect: "follow"
