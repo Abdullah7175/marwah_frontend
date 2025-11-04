@@ -675,6 +675,9 @@ export async function updatePackageCloud(p: UmrahPackage, category_id: string, o
         }
     }
 
+    // Laravel has issues with PUT + multipart/form-data, so use POST with _method override
+    formdata.append('_method', 'PUT');
+    
     const myHeaders = new Headers();
     const token = localStorage.getItem('admin_token');
     if (token) {
@@ -688,7 +691,7 @@ export async function updatePackageCloud(p: UmrahPackage, category_id: string, o
         redirect: "follow"
     };
 
-    await fetch(POST_UPDATE_PACKAGE, requestOptions)
+    await fetch(POST_UPDATE_PACKAGE + '/' + p.id, requestOptions)
         .then((response) => response.text())
         .then((result) => onSuccess(result))
         .catch((error) => onUnexpected(error)).finally(onProgressEnd);
