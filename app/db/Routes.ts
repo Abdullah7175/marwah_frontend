@@ -54,7 +54,7 @@ export const URL_POST_CREATE_REVIEW = API_BASE_URL +'/reviews/create';
 export const POST_CREATE_PACKAGE = API_BASE_URL +'/packages/create';
 export const POST_CREATE_CUSTOM_PACKAGE = API_BASE_URL +'/custom-packages/create';
 export const POST_UPDATE_PACKAGE = API_BASE_URL +'/packages/update';
-export const POST_UPDATE_HOTEL = API_BASE_URL +'/hotels/update';
+export const POST_UPDATE_HOTEL = API_BASE_URL +'/hotels';
 
 export const GET_INQUIRIES = API_BASE_URL + '/inquiries';
 export const GET_DELETE_INQUIRY = API_BASE_URL +'/inquiry/delete/';
