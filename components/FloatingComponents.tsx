@@ -19,7 +19,7 @@ export default function FloatingComponents() {
                 className="fixed sm:bottom-5 bottom-2 sm:right-5  right-0 shadow-lg z-40"
 
             >
-                <Button
+                {/* <Button
                     onClick={handleTrustpilotClick}
                     type="button"
                     child={<Image
@@ -30,7 +30,7 @@ export default function FloatingComponents() {
                         className="transition-transform duration-200 group-hover:scale-110"
                       />}
                     variant="btn_white"
-                />
+                /> */}
                 <Space h={10} />
 
                 <Button

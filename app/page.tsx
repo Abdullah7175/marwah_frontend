@@ -8,7 +8,7 @@ import IquerySection from "@/components/IquerySection";
 import OurPartners from "@/components/OurPartners";
 import OurTestimonials from "@/components/OurTestimonials";
 import PackagesSection from "@/components/PackagesSection";
-import TrustpilotSlider from "@/components/TrustpilotSlider";
+//import TrustpilotSlider from "@/components/TrustpilotSlider";
 import {  Dialog } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserFrame } from "./layout";
@@ -39,7 +39,7 @@ export default function Home() {
       </Head>
       {getUserFrame(
         <div >
-          <TrustpilotSlider />
+          {/* <TrustpilotSlider /> */}
 
           <Hero />
 
