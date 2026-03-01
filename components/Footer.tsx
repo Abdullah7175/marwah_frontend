@@ -62,16 +62,16 @@ const Footer = () => {
               <FooterColumn title="Follow Us">
                 <div className="flex gap-4">
                   <Link href="https://www.facebook.com" aria-label="Facebook" target="_blank" className="hover:opacity-80">
-                    <img src="/facebook.svg" alt="Facebook" width={24} height={24} />
+                    <img src="/facebook.svg" alt="Facebook" width={24} height={24} className="invert" />
                   </Link>
                   <Link href="https://www.instagram.com" aria-label="Instagram" target="_blank" className="hover:opacity-80">
-                    <img src="/instagram.svg" alt="Instagram" width={24} height={24} />
+                    <img src="/instagram.svg" alt="Instagram" width={24} height={24} className="invert" />
                   </Link>
                   <Link href="https://twitter.com" aria-label="Twitter" target="_blank" className="hover:opacity-80">
-                    <img src="/twitter.svg" alt="Twitter" width={24} height={24} />
+                    <img src="/twitter.svg" alt="Twitter" width={24} height={24} className="invert" />
                   </Link>
                   <Link href="https://www.youtube.com" aria-label="YouTube" target="_blank" className="hover:opacity-80">
-                    <img src="/youtube.svg" alt="YouTube" width={24} height={24} />
+                    <img src="/youtube.svg" alt="YouTube" width={24} height={24} className="invert" />
                   </Link>
                 </div>
               </FooterColumn>
