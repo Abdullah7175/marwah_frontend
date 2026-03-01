@@ -102,9 +102,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 "contactType": "customer service",
                 "availableLanguage": "English"
               },
-              "sameAs": [
-                "https://www.trustpilot.com/review/mtumrah.com"
-              ]
+              // "sameAs": [
+              //   "https://www.trustpilot.com/review/mtumrah.com"
+              // ]
             })
           }}
         />

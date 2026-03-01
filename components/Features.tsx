@@ -33,7 +33,7 @@ const Features = () => {
                 description={feature.description}
               />
             ))}
-            <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot">
+            {/* <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot">
             <Image
                     src={'/images/truspilot.png'}
                     alt="Trustpilot logo"
@@ -42,10 +42,8 @@ const Features = () => {
                     quality={80}
                     className={''}
                     loading="lazy"
-                    // className={"transition-opacity opacity-0 duration-[2s]"}
-                    // onLoadingComplete={(image)=>image.classList.remove("opacity-0")}
                 />
-                </a>
+                </a> */}
           </ul>
         </div>
       </div>

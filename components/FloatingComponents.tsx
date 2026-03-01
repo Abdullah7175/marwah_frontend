@@ -8,9 +8,9 @@ import Space from "./Space";
 import { WhatsApp } from "@mui/icons-material";
 export default function FloatingComponents() {
 
-    const handleTrustpilotClick = () => {
-        window.open('https://www.trustpilot.com/review/mtumrah.com', '_blank', 'noopener,noreferrer');
-      };
+    // const handleTrustpilotClick = () => {
+    //     window.open('https://www.trustpilot.com/review/mtumrah.com', '_blank', 'noopener,noreferrer');
+    //   };
 
 
     return (

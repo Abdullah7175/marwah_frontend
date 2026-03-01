@@ -30,8 +30,8 @@ const Navbar = () => {
         ))}
       </ul>
       
-      <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot">
-      {/* <Image
+      {/* <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot">
+      <Image
                     src={'/images/truspilot.png'}
                     alt="Trustpilot logo"
                     width={100}
@@ -39,10 +39,8 @@ const Navbar = () => {
                     quality={80}
                     className={''}
                     loading="lazy"
-                    // className={"transition-opacity opacity-0 duration-[2s]"}
-                    // onLoadingComplete={(image)=>image.classList.remove("opacity-0")}
-                /> */}
-      </a>
+                />
+      </a> */}
 </div>
       <div className="hidden lg:flex items-center gap-3 ms-auto">
         <Link href="https://www.facebook.com" aria-label="Facebook" target="_blank"><img src="/facebook.svg" alt="Facebook" width={22} height={22} /></Link>
@@ -127,11 +125,11 @@ const Navbar = () => {
           </Link>
         ))}
       </ul>
-      <div className="flex justify-center mt-4">
+      {/* <div className="flex justify-center mt-4">
         <a href="https://www.trustpilot.com/review/mtumrah.com" target="_blank" aria-label="Read our reviews on Trustpilot" className="text-slate-200 hover:text-white transition-colors">
           View Our Reviews on Trustpilot
         </a>
-      </div>
+      </div> */}
         </div>
       )}
     </nav>
